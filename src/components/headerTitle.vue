@@ -75,7 +75,6 @@ export default {
     methods: {
         changeSecondtitle (value) {
             this.$emit('switch', value)
-            this.secondSelect = value
         }
     }
 }

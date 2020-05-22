@@ -2,7 +2,7 @@
     <div class="recommend">
         <HeaderTitle/>
         <div class="desc">
-            <p>后端</p>
+            <div class="desc-child">后端</div>
         </div>
     </div>
 </template>
@@ -25,15 +25,13 @@ export default {
 <style lang="scss" scoped>
 .recommend {
     .desc {
-        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-top: 2px;
-        height: 200px;
+        height: 500px;
         background: #fff;
-        p {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(50%, 50%);
+        .desc-child {
             font-size: 50px;
         }
     }

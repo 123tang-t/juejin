@@ -25,22 +25,25 @@
                 </div>
                 <div class="write-essay">写文章</div>
                 <div class="auth">
-                    <span>
+                    <span class="sign" @click.stop="sign">
                         登入
-                        <!-- <img class="auth-icon" src="@/assets/imgs/point.png" alt="icon"> -->
+                        <!-- &nbsp;· -->
                     </span>
-                    <span>注册</span>
+                    <span @click.stop="registered">注册</span>
                 </div>
             </div>
         </div>
+        <!-- 登入注册对话框 -->
+        <SignRegistered
+            :signRegistered="signRegistered"
+            :loginToRegister="loginToRegister"
+            @colse="dialogColse"/>
         <HeaderTitle v-show="changeDemo==='home'||changeDemo==='booklet'"
             :changeDemo="changeDemo"
             :secondSelect="secondSelect"
             @switch="changePage"/>
         <div class="details">
-            <HomePage
-                v-show="changeDemo==='home'"
-                :detailsPage="detailsPage"/>
+            <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage"/>
         </div>
     </div>
 </template>
@@ -48,12 +51,14 @@
 <script>
 import HeaderTitle from '@/components/headerTitle.vue'
 import HomePage from '@/components/detailshome/homePage.vue'
+import SignRegistered from '@/components/signRegistered.vue'
 
 export default {
     name: 'Home',
     components: {
         HeaderTitle,
-        HomePage
+        HomePage,
+        SignRegistered
     },
     data () {
         return {
@@ -62,6 +67,8 @@ export default {
             input: '',
             secondSelect: 'recommend',
             detailsPage: 'recommend',
+            signRegistered: false,
+            loginToRegister: '',
             list: [{
                 value: 'home',
                 label: '首页',
@@ -91,6 +98,19 @@ export default {
         },
         changePage (data) {
             this.detailsPage = data
+            this.secondSelect = data
+        },
+        sign () {
+            this.signRegistered = !this.signRegistered
+            this.loginToRegister = 'sign'
+        },
+        registered () {
+            this.signRegistered = !this.signRegistered
+            this.loginToRegister = 'registered'
+        },
+        dialogColse () {
+            this.signRegistered = false
+            this.loginToRegister = ''
         }
     }
 }
@@ -159,13 +179,20 @@ export default {
                 color: #007fff
             }
             .auth {
-                width: 70px;
+                width: 80px;
                 height: 60px;
                 line-height: 60px;
                 padding: 0 0 0 14.5px;
                 text-align: center;
                 font-size: 16px;
                 color: #007fff;
+                .sign::after {
+                    content: "·";
+                    width: 1.84px;
+                    height: 17px;
+                    margin: 0 2px;
+                    font-size: 10px;
+                }
             }
         }
     }

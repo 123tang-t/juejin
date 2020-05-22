@@ -2,7 +2,7 @@
     <div class="recommend">
         <HeaderTitle/>
         <div class="desc">
-            <p>推荐</p>
+            <div class="desc-child">推荐</div>
         </div>
     </div>
 </template>
@@ -27,13 +27,13 @@ export default {
     .desc {
         position: relative;
         margin-top: 2px;
-        height: 200px;
+        height: 500px;
         background: #fff;
-        p {
+        .desc-child {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(50%, 50%);
+            transform: translate(-50%, -50%);
             font-size: 50px;
         }
     }
