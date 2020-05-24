@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="home" @click="essayColse">
         <div class="header-under">
             <div class="header">
                 <div class="header-logo">
@@ -24,17 +24,20 @@
                     </el-input>
                 </div>
                 <div class="write-essay">
-                    <i class="el-icon-tickets"></i>
-                    <span class="essay" @click="chageEssay">写文章</span>
+                    <div class="text">
+                        <i class="el-icon-tickets"></i>
+                        <span class="essay" @click.stop="chageEssay">写文章</span>
+                    </div>
                     <div class="introduction-list" v-if="essay">
                         <h3 class="essay-title">来掘金写文章，您将有机会</h3>
                         <ul class="essay-list">
-                            <li>与超过 300 万开发者分享您的经验和观点</li>
-                            <li>被编辑推荐，获得更多曝光和关注</li>
-                            <li>加入专栏作者群，结识众多优秀开发者</li>
+                            <li class="list-children">与超过 300 万开发者分享您的经验和观点</li>
+                            <li class="list-children">被编辑推荐，获得更多曝光和关注</li>
+                            <li class="list-children">加入专栏作者群，结识众多优秀开发者</li>
                         </ul>
-                        <el-button type="success">开始写文章</el-button>
+                        <el-button class="essay-button" type="success" @click.stop="registeredJump">开始写文章</el-button>
                     </div>
+                    <div class="box" v-if="essay"></div>
                 </div>
                 <div class="auth">
                     <span class="sign" @click.stop="sign">
@@ -126,7 +129,15 @@ export default {
             this.loginToRegister = ''
         },
         chageEssay () {
-            this.essay = true
+            this.essay = !this.essay
+        },
+        registeredJump () {
+            this.essay = false
+            this.signRegistered = !this.signRegistered
+            this.loginToRegister = 'registered'
+        },
+        essayColse () {
+            this.essay = false
         }
     }
 }
@@ -186,48 +197,78 @@ export default {
                 }
             }
             .write-essay {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-content: center;
                 position: relative;
                 width: 70px;
                 height: 60px;
-                line-height: 60px;
                 padding: 0 14.5px;
                 text-align: center;
                 font-size: 16px;
                 color: #007fff;
                 cursor: pointer;
-                .essay {
-                    margin: 0 0 0 2px;
+                .text {
+                    // margin: 22px 0;
+                    .essay {
+                        height: 16px;
+                        margin: 0 0 0 2px;
+                        font-size: 16px;
+                    }
                 }
                 .introduction-list {
                     position: absolute;
                     top: 60px;
-                    left: -154px;
+                    left: -136px;
                     display: flex;
                     flex-direction: column;
-                    // justify-content: center;
                     align-items: center;
-                    width: 298px;
-                    height: 181px;
+                    width: 276px;
+                    height: 179px;
                     padding: 30px 24px;
                     background: #fff;
                     color: #909090;
                     border-radius: 2px;
                     box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
                     border: 1px solid rgba(178, 181, 187, .5);
-                    z-index: 800px;
+                    z-index: 111;
                     cursor: default;
                     .essay-title {
+                        width: 276px;
                         height: 16px;
                         margin: 0 0 24px;
                         text-align: center;
                         color: #000;
-                        font-size: 15px;
-                        .ul.li {
+                        font-size: 16.8px;
+                    }
+                    .essay-list {
+                        width: 252px;
+                        margin: 0 0 0 24px;
+                        color: #909090;
+                        font-size: 13.2px;
+                        .list-children {
                             height: 16px;
-                            margin: 0 0 16px;
-                            font-size: 13.2px;
+                            margin: 0 0 12px;
+                            text-align: left;
                         }
                     }
+                    .essay-button {
+                        width: 168px;
+                        // height: 43px;
+                        margin: 24px 54px 0;
+                    }
+                }
+                .box {
+                    width: 10px;
+                    height: 10px;
+                    background: #fff;
+                    position: absolute;
+                    left: 32.5px;
+                    top: 55px;
+                    border: 1px solid rgba(178, 181, 187, .5);
+                    transform: rotate(45deg);
+                    z-index: 120;
                 }
             }
             .auth {
