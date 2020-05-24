@@ -23,7 +23,19 @@
                         placeholder="请输入内容">
                     </el-input>
                 </div>
-                <div class="write-essay">写文章</div>
+                <div class="write-essay">
+                    <i class="el-icon-tickets"></i>
+                    <span class="essay" @click="chageEssay">写文章</span>
+                    <div class="introduction-list" v-if="essay">
+                        <h3 class="essay-title">来掘金写文章，您将有机会</h3>
+                        <ul class="essay-list">
+                            <li>与超过 300 万开发者分享您的经验和观点</li>
+                            <li>被编辑推荐，获得更多曝光和关注</li>
+                            <li>加入专栏作者群，结识众多优秀开发者</li>
+                        </ul>
+                        <el-button type="success">开始写文章</el-button>
+                    </div>
+                </div>
                 <div class="auth">
                     <span class="sign" @click.stop="sign">
                         登入
@@ -67,6 +79,7 @@ export default {
             input: '',
             secondSelect: 'recommend',
             detailsPage: 'recommend',
+            essay: false,
             signRegistered: false,
             loginToRegister: '',
             list: [{
@@ -111,6 +124,9 @@ export default {
         dialogColse () {
             this.signRegistered = false
             this.loginToRegister = ''
+        },
+        chageEssay () {
+            this.essay = true
         }
     }
 }
@@ -170,13 +186,49 @@ export default {
                 }
             }
             .write-essay {
+                position: relative;
                 width: 70px;
                 height: 60px;
                 line-height: 60px;
                 padding: 0 14.5px;
                 text-align: center;
                 font-size: 16px;
-                color: #007fff
+                color: #007fff;
+                cursor: pointer;
+                .essay {
+                    margin: 0 0 0 2px;
+                }
+                .introduction-list {
+                    position: absolute;
+                    top: 60px;
+                    left: -154px;
+                    display: flex;
+                    flex-direction: column;
+                    // justify-content: center;
+                    align-items: center;
+                    width: 298px;
+                    height: 181px;
+                    padding: 30px 24px;
+                    background: #fff;
+                    color: #909090;
+                    border-radius: 2px;
+                    box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+                    border: 1px solid rgba(178, 181, 187, .5);
+                    z-index: 800px;
+                    cursor: default;
+                    .essay-title {
+                        height: 16px;
+                        margin: 0 0 24px;
+                        text-align: center;
+                        color: #000;
+                        font-size: 15px;
+                        .ul.li {
+                            height: 16px;
+                            margin: 0 0 16px;
+                            font-size: 13.2px;
+                        }
+                    }
+                }
             }
             .auth {
                 width: 80px;
@@ -186,6 +238,7 @@ export default {
                 text-align: center;
                 font-size: 16px;
                 color: #007fff;
+                cursor: pointer;
                 .sign::after {
                     content: "·";
                     width: 1.84px;
