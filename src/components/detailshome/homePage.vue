@@ -14,21 +14,6 @@
                         <p class="desc">一个帮助开发者成长的社区</p>
                     </div>
                     <div class="input">
-                        <!-- <el-input
-                            size="small"
-                            v-model="input"
-                            placeholder="用户名">
-                        </el-input>
-                        <el-input
-                            size="small"
-                            v-model="input"
-                            placeholder="手机号">
-                        </el-input>
-                        <el-input
-                            size="small"
-                            placeholder="密码(不少于6位)"
-                            v-model="input" show-password>
-                        </el-input> -->
                         <input class="input-children" type="text" name="username" placeholder="用户名" v-model="username">
                         <input class="input-children" type="text" name="phonenumber" placeholder="手机号" v-model="phonenumber">
                         <input class="input-children" type="text" name="password" placeholder="密码（不少于6位）" v-model="password">

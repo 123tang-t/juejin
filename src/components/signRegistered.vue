@@ -1,6 +1,6 @@
 <template>
     <div class="sign-registered" v-if="signRegistered">
-        <!-- 登入对话框 -->
+        <!-- 登录对话框 -->
         <div class="sign-in" v-if="loginToRegister==='sign'">
             <div class="sign-title">
                <h3>登录</h3>

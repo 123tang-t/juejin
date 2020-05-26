@@ -41,18 +41,21 @@
                 </div>
                 <div class="auth">
                     <span class="sign" @click.stop="sign">
-                        登入
+                        登录
                         <!-- &nbsp;· -->
                     </span>
                     <span @click.stop="registered">注册</span>
                 </div>
             </div>
         </div>
-        <!-- 登入注册对话框 -->
+        <!-- 登录注册对话框 -->
         <SignRegistered
             :signRegistered="signRegistered"
             :loginToRegister="loginToRegister"
             @colse="dialogColse"/>
+        <!-- <ElementDialog
+            :signRegistered="signRegistered"
+            :loginToRegister="loginToRegister"/> -->
         <HeaderTitle v-show="changeDemo==='home'||changeDemo==='booklet'"
             :changeDemo="changeDemo"
             :secondSelect="secondSelect"
@@ -67,6 +70,7 @@
 import HeaderTitle from '@/components/headerTitle.vue'
 import HomePage from '@/components/detailshome/homePage.vue'
 import SignRegistered from '@/components/signRegistered.vue'
+// import ElementDialog from '@/components/elementDialog.vue'
 
 export default {
     name: 'Home',
@@ -74,6 +78,7 @@ export default {
         HeaderTitle,
         HomePage,
         SignRegistered
+        // ElementDialog
     },
     data () {
         return {
@@ -139,12 +144,22 @@ export default {
         essayColse () {
             this.essay = false
         }
+        // 监听
+        // changeHomeScroll (el) {
+        //     const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
+        //     if (height === 0) {
+        //         console.log('到底了')
+        //     } else {
+        //         console.log(height)
+        //     }
+        // }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .home {
+    height: 100%;
     .header-under {
         background: #fff;
         // border-bottom: 1px solid #71777C;
@@ -220,7 +235,7 @@ export default {
                 .introduction-list {
                     position: absolute;
                     top: 60px;
-                    left: -136px;
+                    left: -121px;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -267,6 +282,8 @@ export default {
                     left: 32.5px;
                     top: 55px;
                     border: 1px solid rgba(178, 181, 187, .5);
+                    border-right: none;
+                    border-bottom: none;
                     transform: rotate(45deg);
                     z-index: 120;
                 }
