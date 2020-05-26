@@ -1,5 +1,5 @@
 <template>
-    <div class="home" @click="essayColse">
+    <div class="home" @click="essayColse" @scroll="changeScroll">
         <div class="header-under">
             <div class="header">
                 <div class="header-logo">
@@ -110,6 +110,11 @@ export default {
             }]
         }
     },
+    mounted () {
+        window.onscroll = function (el) {
+            console.log('[document scroll', el)
+        }
+    },
     methods: {
         // 改变标题
         change (value, font) {
@@ -143,23 +148,25 @@ export default {
         },
         essayColse () {
             this.essay = false
-        }
+        },
         // 监听
-        // changeHomeScroll (el) {
-        //     const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
-        //     if (height === 0) {
-        //         console.log('到底了')
-        //     } else {
-        //         console.log(height)
-        //     }
-        // }
+        changeScroll (el) {
+            const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
+            if (height === 0) {
+                console.log('到底了')
+            } else {
+                console.log(height)
+            }
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .home {
-    height: 100%;
+    height: 100vh;
+    width: 100vm;
+    overflow-y: auto;
     .header-under {
         background: #fff;
         // border-bottom: 1px solid #71777C;
