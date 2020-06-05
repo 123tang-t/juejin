@@ -61,7 +61,15 @@
             :secondSelect="secondSelect"
             @switch="changePage"/>
         <div class="details">
-            <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage"/>
+            <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage" :recommendList="recommendList"/>
+        </div>
+        <div class="footer">
+            <div class="back-top" v-if="backTop">
+                <i class="el-icon-caret-top"></i>
+            </div>
+            <div class="news">
+                <i class="el-icon-chat-dot-round news-icon"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -70,6 +78,7 @@
 import HeaderTitle from '@/components/headerTitle.vue'
 import HomePage from '@/components/detailshome/homePage.vue'
 import SignRegistered from '@/components/signRegistered.vue'
+import axios from 'axios'
 // import ElementDialog from '@/components/elementDialog.vue'
 
 export default {
@@ -90,6 +99,8 @@ export default {
             essay: false,
             signRegistered: false,
             loginToRegister: '',
+            recommendList: [],
+            backTop: false,
             list: [{
                 value: 'home',
                 label: '首页',
@@ -111,9 +122,7 @@ export default {
         }
     },
     mounted () {
-        window.onscroll = function (el) {
-            console.log('[document scroll', el)
-        }
+        this.getRecommendList()
     },
     methods: {
         // 改变标题
@@ -152,11 +161,56 @@ export default {
         // 监听
         changeScroll (el) {
             const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
-            if (height === 0) {
-                console.log('到底了')
+            const backHeight = el.target.scrollTop - el.target.clientHeight
+            if (backHeight >= 0) {
+                this.backTop = true
             } else {
-                console.log(height)
+                this.backTop = false
             }
+            if (height > 110) {
+                console.log(height)
+            } else {
+                console.log('到底了')
+                this.getnewdata()
+            }
+        },
+        // getRecommendList (page, pageSize) {
+        //     axios.get('api')
+        //         .then(result => {
+        //             this.recommendList = result.list
+        //         })
+        // },
+        getRecommendList (page, pageSize) {
+            axios.get('/mock/index.json')
+                .then(this.getHomeInfoSucc)
+        },
+        getHomeInfoSucc (res) {
+            res = res.data
+            if (res.ret && res.data) {
+                this.recommendList = res.data.swiperList
+            }
+        },
+        getnewdata () {
+            this.recommendList = this.recommendList.concat(this.getRecommendList)
+        },
+        // 模拟接口获取虚拟数据
+        getRecommendListBymock (page, pageSize) {
+            // if (page === globalPage) {
+            //     console.log('最后一页')
+            // }
+            const list = []
+            const oneData = {
+                id: 1,
+                title: 2,
+                desc: 3
+            }
+            let startId = (page - 1) * pageSize
+            for (let i = 0; i < pageSize; i++) {
+                oneData.id = startId
+                list.push(oneData)
+                startId++
+            }
+            this.recommendList = list
         }
     }
 }
@@ -165,11 +219,10 @@ export default {
 <style lang="scss" scoped>
 .home {
     height: 100vh;
-    width: 100vm;
+    width: 100vw;
     overflow-y: auto;
     .header-under {
         background: #fff;
-        // border-bottom: 1px solid #71777C;
         .header {
             display: flex;
             flex-direction: row;
@@ -312,6 +365,37 @@ export default {
                     font-size: 10px;
                 }
             }
+        }
+    }
+    .footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 1000;
+        .back-top, .news {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 12px 0 0;
+            height: 40px;
+            width: 40px;
+            background: #fff;
+            border-radius: 50%;
+            border: 1px solid #f1f1f1;
+            box-shadow: 0 0 5px rgba(0, 0, 0, .05);
+            cursor: pointer;
+        }
+        .back-top {
+            font-size: 16px;
+            color: #909090;
+        }
+        .news {
+            color: #007fff;
         }
     }
 }

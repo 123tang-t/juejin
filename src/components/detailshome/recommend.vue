@@ -5,9 +5,9 @@
             <!-- <div class="desc-child">
                 推荐
             </div> -->
-            <ul class="list">
-                <li>123</li>
-            </ul>
+            <div class="list" v-for="item of recommendList" :key="item.id">
+                {{item.desc}}
+            </div>
         </div>
     </div>
 </template>
@@ -17,6 +17,9 @@ import HeaderTitle from '@/components/public/headerTitle.vue'
 
 export default {
     name: 'Recommend',
+    props: {
+        recommendList: Array
+    },
     components: {
         HeaderTitle
     },
@@ -43,9 +46,8 @@ export default {
     .desc {
         position: relative;
         margin-top: 2px;
-        height: 500px;
+        height: 100%;
         background: #fff;
-        // overflow-y: auto;
         .desc-child {
             position: absolute;
             top: 50%;
@@ -54,7 +56,10 @@ export default {
             font-size: 50px;
         }
         .list {
-            height: 1000px;
+            margin-top: 2px;
+            height: 100px;
+            text-align: center;
+            background: cornflowerblue;
         }
     }
 }

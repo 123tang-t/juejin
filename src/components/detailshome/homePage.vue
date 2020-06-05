@@ -3,7 +3,7 @@
         <!-- <div class="nav">123</div> -->
         <div class="details-page">
             <div class="details-desc">
-                <Recommend v-show="detailsPage==='recommend'"/>
+                <Recommend v-show="detailsPage==='recommend'" :recommendList="recommendList"/>
                 <RealEnd v-show="detailsPage==='realEnd'"/>
                 <FrontEnd v-show="detailsPage==='frontEnd'"/>
             </div>
@@ -82,7 +82,8 @@ import FrontEnd from '@/components/detailshome/frontEnd.vue'
 export default {
     name: 'HeaderTitle',
     props: {
-        detailsPage: String
+        detailsPage: String,
+        recommendList: Array
     },
     components: {
         Recommend,
