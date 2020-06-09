@@ -1,5 +1,6 @@
 <template>
     <div class="home" @click="essayColse" @scroll="changeScroll">
+        <!-- 头部页面 -->
         <div class="header-under">
             <div class="header">
                 <div class="header-logo">
@@ -56,13 +57,16 @@
         <!-- <ElementDialog
             :signRegistered="signRegistered"
             :loginToRegister="loginToRegister"/> -->
+        <!-- 头部下方菜单列表 -->
         <HeaderTitle v-show="changeDemo==='home'||changeDemo==='booklet'"
             :changeDemo="changeDemo"
             :secondSelect="secondSelect"
             @switch="changePage"/>
+        <!-- 详情页面 -->
         <div class="details">
             <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage" :recommendList="recommendList"/>
         </div>
+        <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
                 <i class="el-icon-caret-top"></i>
@@ -101,6 +105,7 @@ export default {
             loginToRegister: '',
             recommendList: [],
             backTop: false,
+            isLoadingData: false,
             list: [{
                 value: 'home',
                 label: '首页',
@@ -171,15 +176,12 @@ export default {
                 console.log(height)
             } else {
                 console.log('到底了')
-                this.getnewdata()
+                if (!this.isLoadingData) {
+                    this.isLoadingData = !this.isLoadingData
+                    this.getnewdata()
+                }
             }
         },
-        // getRecommendList (page, pageSize) {
-        //     axios.get('api')
-        //         .then(result => {
-        //             this.recommendList = result.list
-        //         })
-        // },
         getRecommendList (page, pageSize) {
             axios.get('/mock/index.json')
                 .then(this.getHomeInfoSucc)
@@ -191,7 +193,12 @@ export default {
             }
         },
         getnewdata () {
-            this.recommendList = this.recommendList.concat(this.getRecommendList)
+            axios.get('/mock/index.json')
+                .then((result) => {
+                    console.log('result', result)
+                    this.recommendList = this.recommendList.concat(result.data.data.swiperList)
+                })
+            this.isLoadingData = false
         },
         // 模拟接口获取虚拟数据
         getRecommendListBymock (page, pageSize) {
