@@ -197,8 +197,8 @@ export default {
                 .then((result) => {
                     console.log('result', result)
                     this.recommendList = this.recommendList.concat(result.data.data.swiperList)
+                    this.isLoadingData = false
                 })
-            this.isLoadingData = false
         },
         // 模拟接口获取虚拟数据
         getRecommendListBymock (page, pageSize) {
