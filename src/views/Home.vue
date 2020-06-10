@@ -54,18 +54,16 @@
             :signRegistered="signRegistered"
             :loginToRegister="loginToRegister"
             @colse="dialogColse"/>
-        <!-- <ElementDialog
-            :signRegistered="signRegistered"
-            :loginToRegister="loginToRegister"/> -->
         <!-- 头部下方菜单列表 -->
         <HeaderTitle v-show="changeDemo==='home'||changeDemo==='booklet'"
             :changeDemo="changeDemo"
             :secondSelect="secondSelect"
             @switch="changePage"/>
         <!-- 详情页面 -->
-        <div class="details">
+        <router-view :homeDetails="homeDetails"/>
+        <!-- <div class="details">
             <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage" :recommendList="recommendList"/>
-        </div>
+        </div> -->
         <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
@@ -80,18 +78,14 @@
 
 <script>
 import HeaderTitle from '@/components/headerTitle.vue'
-import HomePage from '@/components/detailshome/homePage.vue'
 import SignRegistered from '@/components/signRegistered.vue'
 import axios from 'axios'
-// import ElementDialog from '@/components/elementDialog.vue'
 
 export default {
     name: 'Home',
     components: {
         HeaderTitle,
-        HomePage,
         SignRegistered
-        // ElementDialog
     },
     data () {
         return {
@@ -103,7 +97,7 @@ export default {
             essay: false,
             signRegistered: false,
             loginToRegister: '',
-            recommendList: [],
+            homeDetails: [],
             backTop: false,
             isLoadingData: false,
             list: [{
@@ -124,6 +118,61 @@ export default {
                 value: 'activity',
                 label: '活动'
             }]
+            // menus: [{
+            //     id: '1',
+            //     value: 'home',
+            //     label: '首页',
+            //     firstFont: 'recommend',
+            //     router: '/welcome',
+            //     children: [{
+            //         id: '1-1',
+            //         value: 'recommend',
+            //         label: '推荐',
+            //         router: '/welcome/recommend'
+            //     }, {
+            //         id: '1-2',
+            //         value: 'realEnd',
+            //         label: '后端',
+            //         router: '/welcome/realEnd'
+            //     }, {
+            //         id: '1-3',
+            //         value: 'frontEnd',
+            //         label: '前端',
+            //         router: '/welcome/frontEnd'
+            //     }, {
+            //         id: '1-4',
+            //         value: 'android',
+            //         label: 'Android',
+            //         router: '/welcome/android'
+            //     }, {
+            //         id: '1-5',
+            //         value: 'ios',
+            //         label: 'iOS',
+            //         router: '/welcome/ios'
+            //     }, {
+            //         id: '1-6',
+            //         value: 'intelligent',
+            //         label: '人工智能',
+            //         router: '/welcome/intelligent'
+            //     }]
+            // }, {
+            //     id: '2',
+            //     value: 'boiling',
+            //     label: '沸点'
+            // }, {
+            //     id: '3',
+            //     value: 'topic',
+            //     label: '话题'
+            // }, {
+            //     id: '4',
+            //     value: 'booklet',
+            //     label: '小册',
+            //     firstFont: 'all'
+            // }, {
+            //     id: '5',
+            //     value: 'activity',
+            //     label: '活动'
+            // }]
         }
     },
     mounted () {
@@ -131,14 +180,30 @@ export default {
     },
     methods: {
         // 改变标题
-        change (value, font) {
+        change (value, font, router) {
             this.select = value
             this.changeDemo = value
             this.secondSelect = font
+            switch (value) {
+            case 'home':
+                this.$router.push({
+                    path: '/welcome'
+                })
+                break
+            case 'boiling':
+                this.$router.push({
+                    path: '/pins'
+                })
+                break
+            }
         },
         changePage (data) {
             this.detailsPage = data
             this.secondSelect = data
+            console.log(data)
+            // this.$router.push({
+            //     path: `/welcome/${data}`
+            // })
         },
         sign () {
             this.signRegistered = !this.signRegistered
@@ -189,14 +254,14 @@ export default {
         getHomeInfoSucc (res) {
             res = res.data
             if (res.ret && res.data) {
-                this.recommendList = res.data.swiperList
+                this.homeDetails = res.data.swiperList
             }
         },
         getnewdata () {
             axios.get('/mock/index.json')
                 .then((result) => {
                     console.log('result', result)
-                    this.recommendList = this.recommendList.concat(result.data.data.swiperList)
+                    this.homeDetails = this.homeDetails.concat(result.data.data.swiperList)
                     this.isLoadingData = false
                 })
         },
