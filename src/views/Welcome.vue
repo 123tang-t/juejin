@@ -123,8 +123,6 @@ export default {
 
 <style scoped lang="scss">
 .home-page {
-    // display: flex;
-    // flex-direction: column;
     max-width: 960px;
     margin: 15px auto;
     .nav {
