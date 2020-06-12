@@ -96,7 +96,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     max-width: 960px;
-    margin: 20px auto 72px;
+    margin: 80px auto 72px;
     .left-nav {
         display: flex;
         flex-direction: column;

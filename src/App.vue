@@ -5,7 +5,6 @@
 </template>
 
 <style lang="scss">
-// @import './assets/css/element-ui.scss';
 * {
     margin: 0;
     padding: 0;
@@ -15,11 +14,5 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: #f4f5f5;
-    height: 100%;
 }
-// .el-input {
-//     .el-input__inner {
-//         background: #fbfbfb;
-//     }
-// }
 </style>

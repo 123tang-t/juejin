@@ -1,7 +1,7 @@
 <template>
   <div class="title-nav">
       <div class="nav-under">
-            <ul class="nav" v-show="changeDemo==='home'">
+            <ul class="nav" v-show="changeDemo==='Welcome'">
                 <li
                     v-for="item of homeList"
                     :key="item.value"
@@ -10,7 +10,7 @@
                     {{item.label}}
                 </li>
             </ul>
-            <ul class="nav" v-show="changeDemo==='booklet'">
+            <ul class="nav" v-show="changeDemo==='Books'">
                 <li
                     v-for="item of bookletList"
                     :key="item.value"

@@ -124,7 +124,7 @@ export default {
 <style scoped lang="scss">
 .home-page {
     max-width: 960px;
-    margin: 15px auto;
+    margin: 120px auto 0;
     .nav {
         height: 36px;
         background: #fff;

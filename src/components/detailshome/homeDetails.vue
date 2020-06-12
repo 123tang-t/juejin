@@ -31,21 +31,18 @@ export default {
 .home-details {
     height: 100%;
     .desc {
-        position: relative;
+        display: flex;
+        flex-direction: column;
         margin-top: 2px;
         height: 100%;
         background: #fff;
-        .desc-child {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 50px;
-        }
         .list {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             margin-top: 2px;
             height: 100px;
-            text-align: center;
             background: cornflowerblue;
         }
     }
