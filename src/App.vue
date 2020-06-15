@@ -9,10 +9,13 @@
     margin: 0;
     padding: 0;
 }
+body {
+    background: #f4f5f5;
+    overflow-y: auto;
+}
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #f4f5f5;
 }
 </style>

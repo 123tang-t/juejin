@@ -1,5 +1,5 @@
 <template>
-    <div class="home" @click="essayColse" @scroll="changeScroll">
+    <div class="home" @click="essayColse">
         <!-- 头部页面 -->
         <div class="auto-header">
             <transition name="header">
@@ -182,9 +182,13 @@ export default {
     },
     mounted () {
         this.getRecommendList()
-        console.log(this.$route)
         this.select = this.$route.name
         this.changeDemo = this.$route.name
+        document.body.addEventListener('scroll', this.changeScroll)
+        // document.body.onscroll = function (el) {
+        //     // console.log(el)
+        //     console.log(el.target.documentElement.offfsetHeight)
+        // }
     },
     methods: {
         // 改变标题
@@ -234,28 +238,13 @@ export default {
         },
         // 监听
         changeScroll (el) {
+            console.log(el.target.offsetHeight)
             const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
             const backHeight = el.target.scrollTop - el.target.clientHeight
-            const headerShow = el.target.scrollTop - el.target.clientHeight
-            switch (headerShow >= 0) {
-            case 'Welcome':
-                this.show = true
-                console.log('正常')
-                break
-            case 'Pins':
-            case 'Topics':
-            case 'Books':
-            case 'Events':
-                this.show = false
-                console.log('不正常')
-                break
-            }
             if (backHeight >= 0) {
                 this.backTop = true
-                this.show = true
             } else {
                 this.backTop = false
-                this.show = false
             }
             if (height > 10) {
                 console.log(height)
@@ -268,13 +257,14 @@ export default {
             }
         },
         getRecommendList (page, pageSize) {
-            axios.get('/mock/index.json')
+            axios.get('http://119.23.250.47:6677/article/list?page=1&pageSize=20')
                 .then(this.getHomeInfoSucc)
         },
         getHomeInfoSucc (res) {
             res = res.data
-            if (res.ret && res.data) {
-                this.homeDetails = res.data.swiperList
+            if (res.message && res.data) {
+                this.homeDetails = res.data.list
+                console.log(this.homeDetails)
             }
         },
         getnewdata () {
@@ -312,12 +302,11 @@ export default {
 .home {
     height: 100vh;
     width: 100vw;
-    overflow-y: auto;
     .auto-header {
         position: fixed;
         top: 0;
         left: 0;
-        right: 15px;
+        right: 0;
         background: #fff;
         .header-under {
             .header-enter-active, .header-leave-active {
