@@ -9,6 +9,14 @@ import '@/assets/css/element-ui.scss'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
+router.beforeEach((to, from, next) => {
+    if (to.path === '/') {
+        next({ name: 'Welcome' })
+    } else {
+        next()
+    }
+})
+
 new Vue({
     router,
     store,

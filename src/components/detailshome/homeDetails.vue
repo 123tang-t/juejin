@@ -2,7 +2,11 @@
     <div class="home-details">
         <HeaderTitle/>
         <div class="desc">
-            <div class="content-box" v-for="item of homeDetails" :key="item.id">
+            <div class="content-box"
+                v-for="item of homeDetails"
+                :key="item.id"
+                @mousemove="changeShare(item.id)"
+                @mouseleave="cancelShare(item.id)">
                 <div class="content">
                     <div class="header">
                         <div class="item"><a href="">专栏</a></div>
@@ -23,7 +27,7 @@
                                 <div class="number">{{item.commentCount}}</div>
                             </a>
                         </div>
-                        <div class="share">
+                        <div class="share" v-show="select===item.id">
                             <a href=""><img class="action-img" src="../../../public/icon/share.png" alt=""></a>
                         </div>
                     </div>
@@ -49,6 +53,15 @@ export default {
     },
     data () {
         return {
+            select: ''
+        }
+    },
+    methods: {
+        changeShare (id) {
+            this.select = id
+        },
+        cancelShare () {
+            this.select = ''
         }
     }
 }
@@ -63,6 +76,7 @@ export default {
         margin-top: 2px;
         height: 100%;
         background: #fff;
+        cursor: pointer;
         .content-box {
             display: flex;
             flex-direction: row;
@@ -70,6 +84,7 @@ export default {
             padding: 18px 24px;
             margin-top: 2px;
             height: 79px;
+            border-bottom: 1px solid #f4f5f5;
             .content {
                 .header {
                     display: flex;
@@ -149,8 +164,10 @@ export default {
                         width: 39.8px;
                         height: 24px;
                     }
+                    select {
+                        display: block;
+                    }
                     .share {
-                        // display: none;
                         width: 31.8px;
                         height: 26px;
                     }
