@@ -64,10 +64,10 @@
             :loginToRegister="loginToRegister"
             @colse="dialogColse"/>
         <!-- 详情页面 -->
-        <router-view :homeDetails="homeDetails"/>
-        <!-- <div class="details">
-            <HomePage v-show="changeDemo==='home'" :detailsPage="detailsPage" :recommendList="recommendList"/>
-        </div> -->
+        <router-view
+            :homeDetails="homeDetails"
+            :headerSelect="headerSelect"
+            :pinsDetails="pinsDetails"/>
         <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
@@ -95,6 +95,7 @@ export default {
         return {
             show: true,
             select: '',
+            headerSelect: '',
             changeDemo: '',
             input: '',
             secondSelect: 'recommend',
@@ -102,7 +103,14 @@ export default {
             essay: false,
             signRegistered: false,
             loginToRegister: '',
+            // 接口数据页面
+            page: 1,
+            pageSize: 20,
+            pageCount: 1,
+            // 主页
             homeDetails: [],
+            // 沸点
+            pinsDetails: [],
             backTop: false,
             isLoadingData: false,
             list: [{
@@ -181,32 +189,33 @@ export default {
         }
     },
     mounted () {
-        this.getRecommendList()
+        this.page = 1
+        this.pageCount = 1
         this.select = this.$route.name
         this.changeDemo = this.$route.name
-        document.body.addEventListener('scroll', this.changeScroll)
-        // document.body.onscroll = function (el) {
-        //     // console.log(el)
-        //     console.log(el.target.documentElement.offfsetHeight)
-        // }
+        this.getRecommendList()
+        window.addEventListener('scroll', this.changeScroll)
     },
     methods: {
-        // 改变标题
+        // 切换页面
         change (value, font, router) {
             this.select = value
             this.changeDemo = value
             this.secondSelect = font
-            switch (value) {
-            case 'Welcome':
+            this.page = 1
+            this.pageCount = 1
+            this.homeDetails = []
+            this.pinsDetails = []
+            this.getRecommendList()
+            if (value === 'Welcome') {
                 this.$router.push({
                     path: '/welcome'
                 })
-                break
-            case 'Pins':
+            }
+            if (value === 'Pins') {
                 this.$router.push({
                     path: '/pins'
                 })
-                break
             }
         },
         changePage (data) {
@@ -238,61 +247,78 @@ export default {
         },
         // 监听
         changeScroll (el) {
-            console.log(el.target.offsetHeight)
-            const height = el.target.scrollHeight - el.target.scrollTop - el.target.clientHeight
-            const backHeight = el.target.scrollTop - el.target.clientHeight
+            const height = el.target.documentElement.scrollHeight - el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
+            const backHeight = el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
+            const headerChange = el.target.documentElement.scrollTop
+            if (headerChange < 200) {
+                this.show = true
+            } else if (this.select === 'Welcome') {
+                this.show = true
+            } else {
+                this.show = false
+                this.headerSelect = this.$route.name
+            }
             if (backHeight >= 0) {
                 this.backTop = true
             } else {
                 this.backTop = false
             }
-            if (height > 10) {
-                console.log(height)
-            } else {
-                console.log('到底了')
-                if (!this.isLoadingData) {
-                    this.isLoadingData = !this.isLoadingData
-                    this.getnewdata()
-                }
+            if (height < 10 && this.page + 1 <= this.pageCount && !this.isLoadingData) {
+                this.page++
+                console.log(this.page)
+                this.isLoadingData = !this.isLoadingData
+                this.getnewdata(this.page, this.pageSize)
             }
         },
-        getRecommendList (page, pageSize) {
-            axios.get('http://119.23.250.47:6677/article/list?page=1&pageSize=20')
-                .then(this.getHomeInfoSucc)
-        },
-        getHomeInfoSucc (res) {
-            res = res.data
-            if (res.message && res.data) {
-                this.homeDetails = res.data.list
-                console.log(this.homeDetails)
+        // 获取接口数据
+        getRecommendList () {
+            if (this.select === 'Welcome') {
+                axios.get('http://119.23.250.47:6677/article/list?page=1&pageSize=20')
+                    .then((result) => {
+                        this.homeDetails = result.data.data.list
+                        this.pageCount = result.data.data.pageCount
+                    })
+            }
+            if (this.select === 'Pins') {
+                axios.get('http://119.23.250.47:6677/message/list?page=1&pageSize=20')
+                    .then((result) => {
+                        this.pinsDetails = result.data.data.list
+                        this.pageCount = result.data.data.pageCount
+                    })
             }
         },
+        // 滚动到底部加载数据
         getnewdata () {
-            axios.get('/mock/index.json')
-                .then((result) => {
-                    console.log('result', result)
-                    this.homeDetails = this.homeDetails.concat(result.data.data.swiperList)
-                    this.isLoadingData = false
+            // axios.get('http://119.23.250.47:6677/article/list', {
+            //     params: {
+            //         page: this.page,
+            //         pageSize: this.pageSize
+            //     }
+            // })
+            //     .then((result) => {
+            //         this.homeDetails = this.homeDetails.concat(result.data.data.list)
+            //         this.isLoadingData = false
+            //     })
+            if (this.select === 'Welcome') {
+                axios.get('http://119.23.250.47:6677/article/list?page=' + this.page + '&pageSize=' + this.pageSize)
+                    .then((result) => {
+                        this.homeDetails = this.homeDetails.concat(result.data.data.list)
+                        this.isLoadingData = false
+                    })
+            }
+            if (this.select === 'Pins') {
+                console.log('123')
+                axios.get('http://119.23.250.47:6677/message/list', {
+                    params: {
+                        page: this.page,
+                        pageSize: this.pageSize
+                    }
                 })
-        },
-        // 模拟接口获取虚拟数据
-        getRecommendListBymock (page, pageSize) {
-            // if (page === globalPage) {
-            //     console.log('最后一页')
-            // }
-            const list = []
-            const oneData = {
-                id: 1,
-                title: 2,
-                desc: 3
+                    .then((result) => {
+                        this.pinsDetails = this.pinsDetails.concat(result.data.data.list)
+                        this.isLoadingData = false
+                    })
             }
-            let startId = (page - 1) * pageSize
-            for (let i = 0; i < pageSize; i++) {
-                oneData.id = startId
-                list.push(oneData)
-                startId++
-            }
-            this.recommendList = list
         }
     }
 }
@@ -308,13 +334,13 @@ export default {
         left: 0;
         right: 0;
         background: #fff;
+        .header-enter-active, .header-leave-active {
+            transition: opacity .3s;
+        }
+        .header-enter, .header-leave-to {
+            opacity: 0;
+        }
         .header-under {
-            .header-enter-active, .header-leave-active {
-                transition: opacity .5s;
-            }
-            .header-enter, .header-leave-to {
-                opacity: 0;
-            }
             border-bottom: 1px solid #f4f5f5;
             .header {
                 display: flex;

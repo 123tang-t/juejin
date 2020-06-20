@@ -1,5 +1,6 @@
 <template>
-    <div class="pins-page">
+    <div :class="[headerSelect==='pins'?'pins-select':'', 'pins-page']">
+        <!-- 左边菜单栏 -->
         <div class="left-nav">
             <ul class="list-top">
                 <li
@@ -20,14 +21,45 @@
                 </li>
             </ul>
         </div>
-        <div class="content">
+        <!-- 内容区域 -->
+        <div class="pins">
             <div
                 class="content-list"
-                v-for="item of homeDetails"
-                :key="item.id">
-                {{item.desc}}
+                v-for="pins of pinsDetails"
+                :key="pins.id">
+                <div class="pins-header">
+                    <div class="left-title">
+                        <div class="title">{{pins.username}}</div>
+                        <div class="meta-box">
+                            <span class="ellipsis">{{pins.job}}</span>
+                            <span class="high">{{pins.company}}</span>
+                        </div>
+                    </div>
+                    <div class="right-attention">关注</div>
+                </div>
+                <div class="content-box">{{pins.content}}</div>
+                <div class="pins-imge">
+                    <img src="" alt=""/>
+                </div>
+                <div class="pins-topic">
+                    <div class="topic-title">{{pins.topic}}</div>
+                </div>
+                <div class="pins-icon">
+                    <div class="like-action">
+                        <img class="icon-img" src="https://b-gold-cdn.xitu.io/v3/static/img/zan.e9d7698.svg" alt="1">
+                        <span class="icon-number">{{pins.likeCount}}</span>
+                    </div>
+                    <div class="comment-action">
+                        <img class="icon-img" src="https://b-gold-cdn.xitu.io/v3/static/img/comment.4d5744f.svg" alt="1">
+                        <span class="icon-number">{{pins.commentCount}}</span>
+                    </div>
+                    <div class="share-action">
+                        <img class="icon-img" src="https://b-gold-cdn.xitu.io/v3/static/img/share.1d55e69.svg" alt="1">
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- 右边信息栏 -->
         <div class="right-news">
             <div class="header">推荐沸点</div>
             <div class="pin-list">123</div>
@@ -43,7 +75,8 @@
 export default {
     name: 'PinsPage',
     props: {
-        homeDetails: Array
+        pinsDetails: Array,
+        headerSelect: String
     },
     data () {
         return {
@@ -91,13 +124,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pins-select {
+    margin: 20px auto 72px;
+}
 .pins-page {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     max-width: 960px;
     margin: 80px auto 72px;
+    // .nav-select {
+    //     position: fixed;
+    //     top: 20px;
+    // }
     .left-nav {
+        // position: fixed;
+        // top: 80px;
+        // left: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -132,19 +175,122 @@ export default {
             border-bottom: 1px solid #909090;
         }
     }
-    .content {
+    .pins {
         display: flex;
         flex-direction: column;
         width: 570px;
         .content-list {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            height: 100px;
-            font-size: 50px;
-            background: cornflowerblue;
+            margin: 0 0 5px;
+            width: 570px;
+            background: #fff;
+            border-radius: 2px;
+            .pins-header {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px 24px 0 20px;
+                height: 48px;
+                .left-title {
+                    display: flex;
+                    flex-direction: column;
+                    margin: 0 0 0 12px;
+                    .title {
+                        font-size: 15px;
+                        color: #2E3135;
+                        font-weight: 600;
+                        font-size: 15px;
+                    }
+                    .meta-box {
+                        display: flex;
+                        flex-direction: row;
+                        margin: 3.6px 0 0 ;
+                        font-size: 13px;
+                        color: #8a9aa9;
+                        cursor: default;
+                        .high {
+                            margin: 0 0 0 5px;
+                        }
+                    }
+                }
+                .right-attention {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 55px;
+                    height: 26px;
+                    font-size: 13px;
+                    border: 1px solid #6cbd45;
+                    color: #6cbd45;
+                }
+            }
+            .content-box {
+                margin: 0 auto;
+                width: 444.61px;
+                font-size: 15px;
+                white-space: pre-wrap;
+                // word-break:break-all;
+                color: #17181a;
+                // overflow: hidden;
+            }
+            .pins-imge {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 444.61px;
+                img {
+                    margin: 4px 4px 0 0;
+                    // width: 109.98px;
+                    // height: 109.98px;
+                }
+            }
+            .pins-topic {
+                margin: 7.992px 48px 0 70.4px;
+                width: 444.61px;
+                height: 24px;
+                .topic-title {
+                    display: inline-block;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 78px;
+                    height: 22px;
+                    font-size: 13px;
+                    color: #007fff;
+                    border: 1px solid #007fff;
+                    border-radius: 14px;
+                    user-select: none
+                }
+            }
+            .pins-icon {
+                display: flex;
+                flex-direction: row;
+                margin: 10px 0 0;
+                width: 570px;
+                height: 34px;
+                cursor: pointer;
+                .like-action, .comment-action, .share-action {
+                    flex-grow: 1;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    height: 32px;
+                    border: 1px solid #f4f5f5;
+                    border-bottom: none;
+                    .icon-img {
+                        height: 18px;
+                        width: 18px;
+                    }
+                    .icon-number {
+                        margin: 0 0 0 3.9px;
+                        font-size: 13px;
+                    }
+                }
+            }
         }
     }
     .right-news {

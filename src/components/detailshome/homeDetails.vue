@@ -17,18 +17,18 @@
                     <div class="action-list">
                         <div class="like">
                             <a href="">
-                                <img class="action-img" src="../../../public/icon/like.png" alt="">
+                                <img class="action-img1" src="https://b-gold-cdn.xitu.io/v3/static/img/zan.e9d7698.svg" alt="">
                                 <div class="number">{{item.lickCount}}</div>
                             </a>
                         </div>
                         <div class="info">
                             <a href="">
-                                <img class="action-img" src="../../../public/icon/info.png" alt="">
+                                <img class="action-img" src="https://b-gold-cdn.xitu.io/v3/static/img/comment.4d5744f.svg" alt="">
                                 <div class="number">{{item.commentCount}}</div>
                             </a>
                         </div>
                         <div class="share" v-show="select===item.id">
-                            <a href=""><img class="action-img" src="../../../public/icon/share.png" alt=""></a>
+                            <img class="action-img" src="https://b-gold-cdn.xitu.io/v3/static/img/share.1d55e69.svg" alt="">
                         </div>
                     </div>
                 </div>
@@ -140,36 +140,37 @@ export default {
                         justify-content: center;
                         align-items: center;
                         padding: 0 9.6px;
-                        border: 1px solid #f4f5f5;
+                        border: 1px solid #eceeee;
                         a {
                             display: flex;
                             align-items: center;
                             color: #909090;
                             text-decoration: none;
-                            .action-img {
+                            .action-img1 {
                                 width: 16px;
                                 height: 16px;
+                            }
+                            .action-img {
+                                width: 20px;
+                                height: 20px;
                             }
                             .number {
                                 display: flex;
                                 flex-direction: row;
                                 justify-content: center;
                                 align-items: center;
-                                margin-left: 4px;
-                                font-size: 16px;
+                                margin-left: 2px;
+                                font-size: 12.996px;
                             }
                         }
                     }
                     .like, .info {
-                        width: 39.8px;
+                        width: 32.8px;
                         height: 24px;
                     }
-                    select {
-                        display: block;
-                    }
                     .share {
-                        width: 31.8px;
-                        height: 26px;
+                        width: 25.8px;
+                        height: 24px;
                     }
                 }
             }
