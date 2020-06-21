@@ -38,7 +38,9 @@
                                     <li class="list-children">被编辑推荐，获得更多曝光和关注</li>
                                     <li class="list-children">加入专栏作者群，结识众多优秀开发者</li>
                                 </ul>
-                                <el-button class="essay-button" type="success" @click.stop="registeredJump">开始写文章</el-button>
+                                <el-button class="essay-button" type="success" @click.stop="registeredJump">
+                                    开始写文章
+                                </el-button>
                             </div>
                             <div class="box" v-if="essay"></div>
                         </div>
@@ -67,7 +69,8 @@
         <router-view
             :homeDetails="homeDetails"
             :headerSelect="headerSelect"
-            :pinsDetails="pinsDetails"/>
+            :pinsDetails="pinsDetails"
+            :booksDetails="booksDetails"/>
         <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
@@ -93,7 +96,9 @@ export default {
     },
     data () {
         return {
+            // 控制头部一级菜单状态
             show: true,
+            // 控制头部列表样式颜色
             select: '',
             headerSelect: '',
             changeDemo: '',
@@ -103,7 +108,7 @@ export default {
             essay: false,
             signRegistered: false,
             loginToRegister: '',
-            // 接口数据页面
+            // 接口数据页码
             page: 1,
             pageSize: 20,
             pageCount: 1,
@@ -111,7 +116,11 @@ export default {
             homeDetails: [],
             // 沸点
             pinsDetails: [],
+            // 小册
+            booksDetails: [],
+            // 控制右下角图标显示隐藏
             backTop: false,
+            // 控制滚动加载数据
             isLoadingData: false,
             list: [{
                 value: 'Welcome',
@@ -129,63 +138,9 @@ export default {
                 firstFont: 'all'
             }, {
                 value: 'Events',
-                label: '活动'
+                label: '活动',
+                firstFont: 'hotActivity'
             }]
-            // menus: [{
-            //     id: '1',
-            //     value: 'home',
-            //     label: '首页',
-            //     firstFont: 'recommend',
-            //     router: '/welcome',
-            //     children: [{
-            //         id: '1-1',
-            //         value: 'recommend',
-            //         label: '推荐',
-            //         router: '/welcome/recommend'
-            //     }, {
-            //         id: '1-2',
-            //         value: 'realEnd',
-            //         label: '后端',
-            //         router: '/welcome/realEnd'
-            //     }, {
-            //         id: '1-3',
-            //         value: 'frontEnd',
-            //         label: '前端',
-            //         router: '/welcome/frontEnd'
-            //     }, {
-            //         id: '1-4',
-            //         value: 'android',
-            //         label: 'Android',
-            //         router: '/welcome/android'
-            //     }, {
-            //         id: '1-5',
-            //         value: 'ios',
-            //         label: 'iOS',
-            //         router: '/welcome/ios'
-            //     }, {
-            //         id: '1-6',
-            //         value: 'intelligent',
-            //         label: '人工智能',
-            //         router: '/welcome/intelligent'
-            //     }]
-            // }, {
-            //     id: '2',
-            //     value: 'boiling',
-            //     label: '沸点'
-            // }, {
-            //     id: '3',
-            //     value: 'topic',
-            //     label: '话题'
-            // }, {
-            //     id: '4',
-            //     value: 'booklet',
-            //     label: '小册',
-            //     firstFont: 'all'
-            // }, {
-            //     id: '5',
-            //     value: 'activity',
-            //     label: '活动'
-            // }]
         }
     },
     mounted () {
@@ -207,6 +162,7 @@ export default {
             this.homeDetails = []
             this.pinsDetails = []
             this.getRecommendList()
+            console.log('456')
             if (value === 'Welcome') {
                 this.$router.push({
                     path: '/welcome'
@@ -215,6 +171,11 @@ export default {
             if (value === 'Pins') {
                 this.$router.push({
                     path: '/pins'
+                })
+            }
+            if (value === 'Books') {
+                this.$router.push({
+                    path: '/books'
                 })
             }
         },
@@ -245,11 +206,12 @@ export default {
         essayColse () {
             this.essay = false
         },
-        // 监听
+        // 监听滚动状态
         changeScroll (el) {
             const height = el.target.documentElement.scrollHeight - el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const backHeight = el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const headerChange = el.target.documentElement.scrollTop
+            // 控制头部是否隐藏
             if (headerChange < 200) {
                 this.show = true
             } else if (this.select === 'Welcome') {
@@ -258,14 +220,15 @@ export default {
                 this.show = false
                 this.headerSelect = this.$route.name
             }
+            // 控制右下角图标是否显示
             if (backHeight >= 0) {
                 this.backTop = true
             } else {
                 this.backTop = false
             }
+            // 获取加载数据
             if (height < 10 && this.page + 1 <= this.pageCount && !this.isLoadingData) {
                 this.page++
-                console.log(this.page)
                 this.isLoadingData = !this.isLoadingData
                 this.getnewdata(this.page, this.pageSize)
             }
@@ -273,42 +236,38 @@ export default {
         // 获取接口数据
         getRecommendList () {
             if (this.select === 'Welcome') {
-                axios.get('http://119.23.250.47:6677/article/list?page=1&pageSize=20')
+                axios.get('/api/article/list?page=1&pageSize=20')
                     .then((result) => {
                         this.homeDetails = result.data.data.list
                         this.pageCount = result.data.data.pageCount
                     })
             }
             if (this.select === 'Pins') {
-                axios.get('http://119.23.250.47:6677/message/list?page=1&pageSize=20')
+                axios.get('/api/message/list?page=1&pageSize=20')
                     .then((result) => {
                         this.pinsDetails = result.data.data.list
+                        this.pageCount = result.data.data.pageCount
+                    })
+            }
+            if (this.select === 'Books') {
+                axios.get('/api/book/list?page=1&pageSize=20')
+                    .then((result) => {
+                        this.booksDetails = result.data.data.list
                         this.pageCount = result.data.data.pageCount
                     })
             }
         },
         // 滚动到底部加载数据
         getnewdata () {
-            // axios.get('http://119.23.250.47:6677/article/list', {
-            //     params: {
-            //         page: this.page,
-            //         pageSize: this.pageSize
-            //     }
-            // })
-            //     .then((result) => {
-            //         this.homeDetails = this.homeDetails.concat(result.data.data.list)
-            //         this.isLoadingData = false
-            //     })
             if (this.select === 'Welcome') {
-                axios.get('http://119.23.250.47:6677/article/list?page=' + this.page + '&pageSize=' + this.pageSize)
+                axios.get('/api/article/list?page=' + this.page + '&pageSize=' + this.pageSize)
                     .then((result) => {
                         this.homeDetails = this.homeDetails.concat(result.data.data.list)
                         this.isLoadingData = false
                     })
             }
             if (this.select === 'Pins') {
-                console.log('123')
-                axios.get('http://119.23.250.47:6677/message/list', {
+                axios.get('/api/message/list', {
                     params: {
                         page: this.page,
                         pageSize: this.pageSize
@@ -316,6 +275,13 @@ export default {
                 })
                     .then((result) => {
                         this.pinsDetails = this.pinsDetails.concat(result.data.data.list)
+                        this.isLoadingData = false
+                    })
+            }
+            if (this.select === 'Books') {
+                axios.get('/api/book/list?page=' + this.page + '&pageSize=' + this.pageSize)
+                    .then((result) => {
+                        this.booksDetails = this.booksDetails.concat(result.data.data.list)
                         this.isLoadingData = false
                     })
             }

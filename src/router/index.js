@@ -17,13 +17,12 @@ const routes = [
             path: '/pins',
             name: 'Pins',
             component: () => import(/* webpackChunkName: "about" */ '../views/Pins.vue')
+        }, {
+            path: '/books',
+            name: 'Books',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Books.vue')
         }]
     }
-    // {
-    //     path: '/welcome',
-    //     name: 'Welcome',
-    //     component: () => import(/* webpackChunkName: "about" */ '../views/Welcome.vue')
-    // }
 ]
 
 const router = new VueRouter({

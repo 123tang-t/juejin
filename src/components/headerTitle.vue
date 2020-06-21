@@ -19,6 +19,15 @@
                     {{item.label}}
                 </li>
             </ul>
+            <ul class="nav" v-show="changeDemo==='Events'">
+                <li
+                    v-for="item of eventsList"
+                    :key="item.value"
+                    :class="[secondSelect===item.value?'second-select':'', 'nav-item']"
+                    @click="changeSecondtitle(item.value)">
+                    {{item.label}}
+                </li>
+            </ul>
       </div>
   </div>
 </template>
@@ -69,6 +78,25 @@ export default {
             }, {
                 value: 'general',
                 label: '通用'
+            }],
+            eventsList: [{
+                value: 'hotActivity',
+                label: '热门活动'
+            }, {
+                value: 'bj',
+                label: '北京'
+            }, {
+                value: 'sh',
+                label: '上海'
+            }, {
+                value: 'gz',
+                label: '广州'
+            }, {
+                value: 'sz',
+                label: '深圳'
+            }, {
+                value: 'other',
+                label: '其他'
             }]
         }
     },

@@ -29,10 +29,14 @@
                 :key="pins.id">
                 <div class="pins-header">
                     <div class="left-title">
-                        <div class="title">{{pins.username}}</div>
-                        <div class="meta-box">
-                            <span class="ellipsis">{{pins.job}}</span>
-                            <span class="high">{{pins.company}}</span>
+                        <img class="avatar" src="https://user-gold-cdn.xitu.io/2020/5/21/17235e08e8da1159?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1" alt="头像"/>
+                        <div class="info-desc">
+                            <div class="title">{{pins.username}}{{pins.id}}</div>
+                            <div class="meta-box">
+                                <span class="ellipsis">{{pins.job}}</span>
+                                <span class="symbol" v-if="pins.company">&nbsp;@</span>
+                                <span class="high">{{pins.company}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="right-attention">关注</div>
@@ -196,25 +200,35 @@ export default {
                 height: 48px;
                 .left-title {
                     display: flex;
-                    flex-direction: column;
-                    margin: 0 0 0 12px;
-                    .title {
-                        font-size: 15px;
-                        color: #2E3135;
-                        font-weight: 600;
-                        font-size: 15px;
+                    flex-direction: row;
+                    .avatar {
+                        width: 45px;
+                        height: 45px;
+                        background: #eeeeee;
+                        border-radius: 50%;
                     }
-                    .meta-box {
+                    .info-desc {
                         display: flex;
-                        flex-direction: row;
-                        margin: 3.6px 0 0 ;
-                        font-size: 13px;
-                        color: #8a9aa9;
-                        cursor: default;
-                        .high {
-                            margin: 0 0 0 5px;
+                        flex-direction: column;
+                        margin: 0 0 0 12px;
+                        .title {
+                            font-size: 15px;
+                            color: #2E3135;
+                            font-weight: 600;
+                            font-size: 15px;
                         }
-                    }
+                        .meta-box {
+                            display: flex;
+                            flex-direction: row;
+                            margin: 3.6px 0 0 ;
+                            font-size: 13px;
+                            color: #8a9aa9;
+                            cursor: default;
+                            .symbol, .high {
+                                margin: 0 0 0 3px;
+                            }
+                        }
+                }
                 }
                 .right-attention {
                     display: flex;
@@ -232,9 +246,8 @@ export default {
                 width: 444.61px;
                 font-size: 15px;
                 white-space: pre-wrap;
-                // word-break:break-all;
                 color: #17181a;
-                // overflow: hidden;
+                overflow: hidden;
             }
             .pins-imge {
                 display: flex;
