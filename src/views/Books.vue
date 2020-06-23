@@ -18,12 +18,15 @@
                         <div class="profile">{{books.profile}}</div>
                     </div>
                     <div class="other">
-                        <div class="price-text">&nbsp;¥{{books.price}}</div>
+                        <div class="price-text">
+                            <span>&nbsp;¥{{books.price}}</span>
+                        </div>
                         <div class="chapter-number">{{books.section}}小节</div>
                         <div class="symbol">.</div>
                         <div class="read-time">阅读时长{{books.contentSize}}秒</div>
                         <div class="symbol">.</div>
                         <div class="buy-number">{{books.buyCount}}人已购买</div>
+                        <div></div>
                     </div>
                 </div>
             </div>
@@ -129,7 +132,7 @@ export default {
                     flex-direction: row;
                     align-items: center;
                     margin: 6px 0 0;
-                    height: 26;
+                    height: 26px;
                     .avatar {
                         margin: 0 8px 0 0;
                         width: 26px;

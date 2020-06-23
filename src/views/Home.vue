@@ -70,7 +70,8 @@
             :homeDetails="homeDetails"
             :headerSelect="headerSelect"
             :pinsDetails="pinsDetails"
-            :booksDetails="booksDetails"/>
+            :booksDetails="booksDetails"
+            :eventsDetails="eventsDetails"/>
         <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
@@ -118,6 +119,8 @@ export default {
             pinsDetails: [],
             // 小册
             booksDetails: [],
+            // 活动
+            eventsDetails: [],
             // 控制右下角图标显示隐藏
             backTop: false,
             // 控制滚动加载数据
@@ -162,7 +165,6 @@ export default {
             this.homeDetails = []
             this.pinsDetails = []
             this.getRecommendList()
-            console.log('456')
             if (value === 'Welcome') {
                 this.$router.push({
                     path: '/welcome'
@@ -176,6 +178,11 @@ export default {
             if (value === 'Books') {
                 this.$router.push({
                     path: '/books'
+                })
+            }
+            if (value === 'Events') {
+                this.$router.push({
+                    path: '/events'
                 })
             }
         },
@@ -256,6 +263,13 @@ export default {
                         this.pageCount = result.data.data.pageCount
                     })
             }
+            if (this.select === 'Events') {
+                axios.get('/api/activity/list?page=1&pageSize=20')
+                    .then((result) => {
+                        this.eventsDetails = result.data.data.list
+                        this.pageCount = result.data.data.pageCount
+                    })
+            }
         },
         // 滚动到底部加载数据
         getnewdata () {
@@ -282,6 +296,18 @@ export default {
                 axios.get('/api/book/list?page=' + this.page + '&pageSize=' + this.pageSize)
                     .then((result) => {
                         this.booksDetails = this.booksDetails.concat(result.data.data.list)
+                        this.isLoadingData = false
+                    })
+            }
+            if (this.select === 'Events') {
+                axios.get('api/activity/list', {
+                    params: {
+                        page: this.page,
+                        pageSize: this.pageSize
+                    }
+                })
+                    .then((result) => {
+                        this.eventsDetails = this.eventsDetails.concat(result.data.data.list)
                         this.isLoadingData = false
                     })
             }
