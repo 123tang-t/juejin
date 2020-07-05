@@ -6,17 +6,29 @@
                <h3>登录</h3>
                <i class="el-icon-close close" @click="colseBox"></i>
             </div>
-            <el-input
-                class="dialog-input"
-                v-model="input"
-                placeholder="请输入手机号或者邮箱">
-            </el-input>
-            <el-input
-                class="dialog-input"
-                v-model="input"
-                placeholder="请输入密码">
-            </el-input>
-            <el-button class="sign-button" type="primary">登录</el-button>
+            <el-form
+                :model="loginMessage">
+                <el-form-item>
+                    <el-input
+                        class="dialog-input"
+                        v-model="loginMessage.username"
+                        placeholder="请输入手机号或者邮箱">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input
+                        class="dialog-input"
+                        v-model="loginMessage.password"
+                        placeholder="请输入密码">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <el-button
+                class="sign-button"
+                type="primary"
+                @click.stop="loginAccount">
+                登录
+            </el-button>
             <div class="prompt-box">
                 <span>没有账号？</span>
                 <a class="chickable" href="">注册</a>
@@ -37,22 +49,36 @@
                <h3>注册</h3>
                <i class="el-icon-close close" @click="colseBox"></i>
             </div>
-            <el-input
-                class="dialog-input"
-                v-model="input"
-                placeholder="请输入用户名">
-            </el-input>
-            <el-input
-                class="dialog-input"
-                v-model="input"
-                placeholder="请输入手机号">
-            </el-input>
-            <el-input
-                class="dialog-input"
-                v-model="input"
-                placeholder="请输入密码（不少于6位）">
-            </el-input>
-            <el-button class="registered-button" type="primary">注册</el-button>
+            <el-form
+                :model="registerMessage">
+                <el-form-item>
+                    <el-input
+                        class="dialog-input"
+                        v-model="registerMessage.username"
+                        placeholder="请输入用户名">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                   <el-input
+                        class="dialog-input"
+                        v-model="registerMessage.phoneNumber"
+                        placeholder="请输入手机号">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                   <el-input
+                        class="dialog-input"
+                        v-model="registerMessage.password"
+                        placeholder="请输入密码（不少于6位）">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <el-button
+                class="registered-button"
+                type="primary"
+                @click.stop="registerAccount">
+                注册
+            </el-button>
             <div class="prompt-box">
                 <a class="chickable" href="">已有账号登录</a>
             </div>
@@ -66,6 +92,8 @@
 </template>
 
 <script>
+// import sha256 from 'crypto-js/sha256'
+
 export default {
     name: 'signRegistered',
     props: {
@@ -74,12 +102,52 @@ export default {
     },
     data () {
         return {
-            input: ''
+            loginMessage: {
+                username: '',
+                password: ''
+            },
+            registerMessage: {
+                username: '',
+                phoneNumber: '',
+                password: ''
+            }
         }
     },
+    // watch: {
+    //     change () {
+    //         this.loginMessage.password = sha256(this.loginMessage.password)
+    //         console.log(this.loginMessage.password)
+    //     }
+    // },
     methods: {
+        loginAccount () {
+            // this.loginMessage.password = sha256(this.loginMessage.password)
+            // console.log(this.loginMessage.password)
+            this.$emit('login', this.loginMessage)
+            this.loginMessage = {
+                username: '',
+                password: ''
+            }
+        },
+        registerAccount () {
+            this.$emit('register', this.registerMessage)
+            this.registerMessage = {
+                username: '',
+                phoneNumber: '',
+                password: ''
+            }
+        },
         colseBox () {
             this.$emit('colse')
+            this.loginMessage = {
+                username: '',
+                password: ''
+            }
+            this.registerMessage = {
+                username: '',
+                phoneNumber: '',
+                password: ''
+            }
         }
     }
 }
@@ -114,12 +182,8 @@ export default {
                 font-size: 18px;
             }
         }
-        .dialog-input {
-            margin: 0 0 10px;
-        }
         .sign-button {
             width: 270px;
-            margin: 5px 0 0;
         }
         .prompt-box {
             height: 18px;
@@ -163,7 +227,7 @@ export default {
     // 注册对话框样式
     .registered {
         width: 270px;
-        height: 307px;
+        height: 317px;
         padding: 24px;
         background: #fff;
         .registered-title {
@@ -177,12 +241,8 @@ export default {
                 font-size: 18px;
             }
         }
-        .dialog-input {
-            margin: 0 0 10px;
-        }
         .registered-button {
             width: 270px;
-            margin: 5px 0 0;
         }
         .prompt-box {
             display: flex;

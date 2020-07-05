@@ -3,6 +3,11 @@
         background: #fbfbfb;
     } 
 }
+.el-form {
+    .el-form-item {
+        margin: 0 0 10px 0;
+    }
+}
 .dialog-input {
     .el-input__inner {
         background: #fff;

@@ -6,7 +6,7 @@
                 <HomeDetails :homeDetails="homeDetails"/>
             </div>
             <div class="contents">
-                <div class="sign-in">
+                <div class="sign-in" v-if="!loginStatus">
                     <div class="title">
                         <p class="title-name">掘金-juejin.im</p>
                         <p class="desc">一个帮助开发者成长的社区</p>
@@ -21,9 +21,23 @@
                         注册登入即表示<br>同意<a href="">用户协议</a>、<a href="">隐私政策</a>
                     </div>
                 </div>
+                <div class="author-list" v-if="loginStatus">
+                    <div class="title">作者榜</div>
+                    <div class="list-item" v-for="message of authorMessage" :key="message.id">
+                        <img class="author-avater" :src="message.ingUrl" :alt="message.id">
+                        <div class="desc">
+                            <div class="title">{{message.name}}</div>
+                            <div class="job">{{message.job}}</div>
+                            <div class="field">{{message.field}}</div>
+                        </div>
+                    </div>
+                    <div class="all-author">
+                        完整榜单<i class="el-icon-arrow-right"></i>
+                    </div>
+                </div>
                 <div class="hot-label">
                     <div class="label">热门标签</div>
-                    <el-link class="view-all" type="primary" :underline="false">查看全部</el-link>
+                    <a class="view-all" type="primary" :underline="false">查看全部</a>
                 </div>
                 <div class="hot-list">
                     <div class="list-children" v-for="item of hotList" :key="item.id">
@@ -79,7 +93,8 @@ export default {
     name: 'HeaderTitle',
     props: {
         detailsPage: String,
-        homeDetails: Array
+        homeDetails: Array,
+        loginStatus: Boolean
     },
     components: {
         HomeDetails
@@ -115,6 +130,25 @@ export default {
             }, {
                 id: '04',
                 url: 'https://b-gold-cdn.xitu.io/v3/static/img/jianshu.80c1fdd.png'
+            }],
+            authorMessage: [{
+                id: '01',
+                imgUrl: 'https://leancloud-gold-cdn.xitu.io/lcWmtTP99VzRCRSXDeIWQ2C?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                name: 'BeSill',
+                job: '全栈打杂',
+                field: 'Vue.js领域贡献者'
+            }, {
+                id: '02',
+                imgUrl: 'https://user-gold-cdn.xitu.io/2019/7/8/16bcfe065d245536?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                name: '多肉邦',
+                job: '前端开发',
+                field: '前端领域贡献者'
+            }, {
+                id: '03',
+                imgUrl: 'https://user-gold-cdn.xitu.io/2019/5/17/16ac563fb4ad22db?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                name: '卡萨布兰卡卡',
+                job: '前端',
+                field: 'React.js、前端、JavaScript 领域贡献者'
             }]
         }
     }
@@ -187,6 +221,67 @@ export default {
                     }
                 }
             }
+            .author-list {
+                margin-bottom: 10px;
+                width: 240px;
+                height: 318.7px;
+                background: #fff;
+                .title {
+                    padding: 12px 15.6px;
+                    height: 17px;
+                    color: #333333;
+                    font-size: 13.92px;
+                    border-bottom: 1px solid #f4f5f5;
+                }
+                .list-item {
+                    display: flex;
+                    flex-direction: row;
+                    padding: 12px 15.6px;
+                    height: 54.23px;
+                    .author-avater {
+                        margin-right: 9.6px;
+                        width: 45.59px;
+                        height: 45.59px;
+                        background: #EEEEEE;
+                    }
+                    .desc {
+                        display: flex;
+                        flex-direction: column;
+                        width: 153.21px;
+                        .title {
+                            padding: 0;
+                            height: 18px;
+                            color: #333333;
+                            font-size: 13.92px;
+                            font-weight: 400;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            border: none;
+                        }
+                        .job, .field {
+                            margin-bottom: 3px;
+                            height: 15px;
+                            color: #909090;
+                            font-size: 12px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                }
+                .all-author {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 12px 0;
+                    height: 17px;
+                    color: #007fff;
+                    font-size: 13.92px;
+                    font-weight: 500;
+                    border-top: 1px solid #f4f5f5;
+                }
+            }
             .hot-label {
                 display: flex;
                 flex-direction: row;
@@ -200,6 +295,8 @@ export default {
                     font-size: 14px;
                 }
                 .view-all {
+                    text-decoration: none;
+                    color: #007fff;
                     font-size: 12px;
                 }
             }

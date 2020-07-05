@@ -26,30 +26,64 @@
                                 placeholder="请输入内容">
                             </el-input>
                         </div>
-                        <div class="write-essay">
-                            <div class="text">
-                                <i class="el-icon-tickets"></i>
-                                <span class="essay" @click.stop="chageEssay">写文章</span>
+                        <!-- 未登录状态显示 -->
+                        <div class="sign-out" v-if="!loginStatus">
+                            <div class="write-essay">
+                                <div class="text">
+                                    <i class="el-icon-tickets"></i>
+                                    <span class="essay" @click.stop="chageEssay">写文章</span>
+                                </div>
+                                <div class="introduction-list" v-if="essay">
+                                    <h3 class="essay-title">来掘金写文章，您将有机会</h3>
+                                    <ul class="essay-list">
+                                        <li class="list-children">与超过 300 万开发者分享您的经验和观点</li>
+                                        <li class="list-children">被编辑推荐，获得更多曝光和关注</li>
+                                        <li class="list-children">加入专栏作者群，结识众多优秀开发者</li>
+                                    </ul>
+                                    <el-button class="essay-button" type="success" @click.stop="registeredJump">
+                                        开始写文章
+                                    </el-button>
+                                </div>
+                                <div class="box" v-if="essay"></div>
                             </div>
-                            <div class="introduction-list" v-if="essay">
-                                <h3 class="essay-title">来掘金写文章，您将有机会</h3>
-                                <ul class="essay-list">
-                                    <li class="list-children">与超过 300 万开发者分享您的经验和观点</li>
-                                    <li class="list-children">被编辑推荐，获得更多曝光和关注</li>
-                                    <li class="list-children">加入专栏作者群，结识众多优秀开发者</li>
-                                </ul>
-                                <el-button class="essay-button" type="success" @click.stop="registeredJump">
-                                    开始写文章
-                                </el-button>
+                            <div class="auth">
+                                <span class="sign" @click.stop="sign">
+                                    登录
+                                </span>
+                                <span @click.stop="registered">注册</span>
                             </div>
-                            <div class="box" v-if="essay"></div>
                         </div>
-                        <div class="auth">
-                            <span class="sign" @click.stop="sign">
-                                登录
-                                <!-- &nbsp;· -->
-                            </span>
-                            <span @click.stop="registered">注册</span>
+                        <!-- 登陆状态显示 -->
+                        <div class="sign-in" v-if="loginStatus">
+                            <div class="essay">
+                                <div class="add-ground">
+                                    <div class="add-btn">
+                                        <span>发沸点</span>
+                                    </div>
+                                    <div class="right-icon" @click.stop="unfold">
+                                        <img class="icon" src="../../public/icon/drop.png" alt="下拉图标">
+                                    </div>
+                                    <div class="write-article" v-if="expandMerge">
+                                        <ul class="list">
+                                            <li class="list-item">写文章</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="news">
+                                <img class="news-icon" src="../../public/icon/news.png" alt="消息">
+                            </div>
+                            <div class="profile-picture">
+                                <img
+                                    class="picture"
+                                    src="https://user-gold-cdn.xitu.io/2019/9/5/16cff217225aacc3?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
+                                    alt="头像"
+                                    @click.stop="openMenu">
+                            </div>
+                            <div class="menu-list" v-if="menu">
+                                <img class="icon" src="../../public/icon/out.png" alt="图标">
+                                <span @click="signOut">登出</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,9 +98,12 @@
         <SignRegistered
             :signRegistered="signRegistered"
             :loginToRegister="loginToRegister"
-            @colse="dialogColse"/>
+            @colse="dialogColse"
+            @login="loginAccount"
+            @register="registerAccount"/>
         <!-- 详情页面 -->
         <router-view
+            :loginStatus="loginStatus"
             :homeDetails="homeDetails"
             :headerSelect="headerSelect"
             :pinsDetails="pinsDetails"
@@ -99,6 +136,9 @@ export default {
         return {
             // 控制头部一级菜单状态
             show: true,
+            // 登录状态
+            loginStatus: false,
+            menu: false,
             // 控制头部列表样式颜色
             select: '',
             headerSelect: '',
@@ -107,6 +147,7 @@ export default {
             secondSelect: 'recommend',
             detailsPage: 'recommend',
             essay: false,
+            expandMerge: false,
             signRegistered: false,
             loginToRegister: '',
             // 接口数据页码
@@ -190,17 +231,52 @@ export default {
             this.detailsPage = data
             this.secondSelect = data
         },
+        // 打开登陆页面
         sign () {
             this.signRegistered = !this.signRegistered
             this.loginToRegister = 'sign'
         },
+        // 打开注册页面
         registered () {
             this.signRegistered = !this.signRegistered
             this.loginToRegister = 'registered'
         },
+        // 账号登录
+        loginAccount (accountMessage) {
+            axios.post('/api/user/login', accountMessage)
+                .then((result) => {
+                    if (result.data.code !== 1) {
+                        this.$message.error('账号密码错误')
+                    } else {
+                        this.signRegistered = false
+                        this.loginToRegister = ''
+                        this.getRecommendList()
+                    }
+                })
+        },
+        // 账号注册
+        registerAccount (accountMessage) {
+            axios.post('/api/user/register', accountMessage)
+                .then((result) => {
+                    if (result.data.code !== 1) {
+                        this.$message.error('请输入完整的注册信息')
+                    } else {
+                        this.loginToRegister = 'sign'
+                    }
+                })
+        },
+        // 关闭登录注册页面
         dialogColse () {
             this.signRegistered = false
             this.loginToRegister = ''
+        },
+        openMenu () {
+            this.menu = !this.menu
+        },
+        // 退出账号登录
+        signOut () {
+            axios.post('/api/user/logout')
+            this.loginStatus = false
         },
         chageEssay () {
             this.essay = !this.essay
@@ -210,8 +286,13 @@ export default {
             this.signRegistered = !this.signRegistered
             this.loginToRegister = 'registered'
         },
+        unfold () {
+            this.expandMerge = !this.expandMerge
+        },
         essayColse () {
             this.essay = false
+            this.expandMerge = false
+            this.menu = false
         },
         // 监听滚动状态
         changeScroll (el) {
@@ -242,6 +323,11 @@ export default {
         },
         // 获取接口数据
         getRecommendList () {
+            axios.get('/api/user/info').then((result) => {
+                if (result.data.code === 1) {
+                    this.loginStatus = true
+                }
+            })
             if (this.select === 'Welcome') {
                 axios.get('/api/article/list?page=1&pageSize=20')
                     .then((result) => {
@@ -382,98 +468,221 @@ export default {
                         bottom: 14px;
                     }
                 }
-                .write-essay {
+                .sign-out {
                     display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-content: center;
-                    position: relative;
-                    width: 70px;
-                    height: 60px;
-                    padding: 0 14.5px;
-                    text-align: center;
-                    font-size: 16px;
-                    color: #007fff;
-                    cursor: pointer;
-                    .text {
-                        // margin: 22px 0;
-                        .essay {
-                            height: 16px;
-                            margin: 0 0 0 2px;
-                            font-size: 16px;
-                        }
-                    }
-                    .introduction-list {
-                        position: absolute;
-                        top: 60px;
-                        left: -121px;
+                    flex-direction: row;
+                    align-items: center;
+                    .write-essay {
                         display: flex;
                         flex-direction: column;
-                        align-items: center;
-                        width: 276px;
-                        height: 179px;
-                        padding: 30px 24px;
-                        background: #fff;
-                        color: #909090;
-                        border-radius: 2px;
-                        box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
-                        border: 1px solid rgba(178, 181, 187, .5);
-                        z-index: 111;
-                        cursor: default;
-                        .essay-title {
-                            width: 276px;
-                            height: 16px;
-                            margin: 0 0 24px;
-                            text-align: center;
-                            color: #000;
-                            font-size: 16.8px;
-                        }
-                        .essay-list {
-                            width: 252px;
-                            margin: 0 0 0 24px;
-                            color: #909090;
-                            font-size: 13.2px;
-                            .list-children {
+                        justify-content: center;
+                        align-content: center;
+                        position: relative;
+                        width: 70px;
+                        height: 60px;
+                        padding: 0 14.5px;
+                        text-align: center;
+                        font-size: 16px;
+                        color: #007fff;
+                        cursor: pointer;
+                        .text {
+                            // margin: 22px 0;
+                            .essay {
                                 height: 16px;
-                                margin: 0 0 12px;
-                                text-align: left;
+                                margin: 0 0 0 2px;
+                                font-size: 16px;
                             }
                         }
-                        .essay-button {
-                            width: 168px;
-                            // height: 43px;
-                            margin: 24px 54px 0;
+                        .introduction-list {
+                            position: absolute;
+                            top: 60px;
+                            left: -121px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            width: 276px;
+                            height: 179px;
+                            padding: 30px 24px;
+                            background: #fff;
+                            color: #909090;
+                            border-radius: 2px;
+                            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+                            border: 1px solid rgba(178, 181, 187, .5);
+                            z-index: 111;
+                            cursor: default;
+                            .essay-title {
+                                width: 276px;
+                                height: 16px;
+                                margin: 0 0 24px;
+                                text-align: center;
+                                color: #000;
+                                font-size: 16.8px;
+                            }
+                            .essay-list {
+                                width: 252px;
+                                margin: 0 0 0 24px;
+                                color: #909090;
+                                font-size: 13.2px;
+                                .list-children {
+                                    height: 16px;
+                                    margin: 0 0 12px;
+                                    text-align: left;
+                                }
+                            }
+                            .essay-button {
+                                width: 168px;
+                                // height: 43px;
+                                margin: 24px 54px 0;
+                            }
+                        }
+                        .box {
+                            width: 10px;
+                            height: 10px;
+                            background: #fff;
+                            position: absolute;
+                            left: 32.5px;
+                            top: 55px;
+                            border: 1px solid rgba(178, 181, 187, .5);
+                            border-right: none;
+                            border-bottom: none;
+                            transform: rotate(45deg);
+                            z-index: 120;
                         }
                     }
-                    .box {
-                        width: 10px;
-                        height: 10px;
-                        background: #fff;
-                        position: absolute;
-                        left: 32.5px;
-                        top: 55px;
-                        border: 1px solid rgba(178, 181, 187, .5);
-                        border-right: none;
-                        border-bottom: none;
-                        transform: rotate(45deg);
-                        z-index: 120;
+                    .auth {
+                        width: 80px;
+                        height: 60px;
+                        line-height: 60px;
+                        padding: 0 0 0 14.5px;
+                        text-align: center;
+                        font-size: 16px;
+                        color: #007fff;
+                        cursor: pointer;
+                        .sign::after {
+                            content: "·";
+                            width: 1.84px;
+                            height: 17px;
+                            margin: 0 2px;
+                            font-size: 10px;
+                        }
                     }
                 }
-                .auth {
-                    width: 80px;
-                    height: 60px;
-                    line-height: 60px;
-                    padding: 0 0 0 14.5px;
-                    text-align: center;
-                    font-size: 16px;
-                    color: #007fff;
-                    cursor: pointer;
-                    .sign::after {
-                        content: "·";
-                        width: 1.84px;
-                        height: 17px;
-                        margin: 0 2px;
-                        font-size: 10px;
+                .sign-in {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    position: relative;
+                    .essay {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0 14.4px;
+                        height: 60px;
+                        width: 79.58px;
+                        .add-ground {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            position: relative;
+                            height: 32px;
+                            width: 79.58px;
+                            color: #fff;
+                            border-radius: 3px;
+                            cursor: pointer;
+                            .add-btn {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                padding: 0 10.8px;
+                                width: 41.99px;
+                                height: 32px;
+                                font-size: 14px;
+                                background: #007fff;
+                            }
+                            .right-icon {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                // margin-left: 0.1px;
+                                width: 16px;
+                                height: 32px;
+                                background: #007fff;
+                                .icon {
+                                    width: 16px;
+                                    height: 16px;
+                                }
+                            }
+                            .write-article {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                position: absolute;
+                                top: 32px;
+                                left: 0;
+                                padding: 5px 0;
+                                width: 79.59px;
+                                height: 28px;
+                                background: #fff;
+                                border: 1px solid #ebebeb;
+                                border-radius: 2px;
+                                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+                                .list {
+                                    list-style-type: none;
+                                    .list-item {
+                                        padding-left: 9.6px;
+                                        color: #3B76C5;
+                                        font-size: 14.004px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .news {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 45.28px;
+                        height: 60px;
+                        .news-icon {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                    .profile-picture {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding-left: 14.4px;
+                        width: 29.99px;
+                        height: 60px;
+                        .picture {
+                            width: 30px;
+                            height: 30px;
+                            background: #EEEEEE;
+                        }
+                    }
+                    .menu-list {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 60px;
+                        right: 0;
+                        padding: 12px 0;
+                        width: 157.19px;
+                        height: 30px;
+                        color: #71777C;
+                        font-size: 18px;
+                        background: #fff;
+                        border: 1px solid #f4f5f5;
+                        z-index: 112;
+                        .icon {
+                            margin-right: 10px;
+                            width: 18.73px;
+                            height: 18px;
+                        }
                     }
                 }
             }
