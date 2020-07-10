@@ -10,7 +10,7 @@
                     </div>
                     <div class="desc">{{books.desc}}</div>
                     <div class="author">
-                        <img src="https://user-gold-cdn.xitu.io/2019/1/11/1683a78ae7d12c82?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1" alt="头像" class="avatar"/>
+                        <img src="../assets/photo/sign2.jpg" alt="头像" class="avatar"/>
                         <div class="user-name">{{books.username}}</div>
                         <div class="level">
                             <span>LV{{books.level}}</span>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="sticky-section">
+        <div :class="[navFixed?'sticky-change':'', 'sticky-section']">
             <div class="announcement-content">
                 <img class="announcement-img" src="https://b-gold-cdn.xitu.io/v3/static/img/announcement.a57241c.png" alt="公告">
                 <span class="announcement-desc">小册下线分销提现公告</span>
@@ -62,7 +62,8 @@
 export default {
     name: 'BooksPage',
     props: {
-        booksDetails: Array
+        booksDetails: Array,
+        navFixed: Boolean
     }
 }
 </script>
@@ -191,8 +192,10 @@ export default {
         }
     }
     .sticky-section {
-        margin: 0 0 0 20px;
+        margin: 0px 0 0 720px;
         width: 240px;
+        position: fixed;
+        top: 120px;
         .announcement-content {
             display: flex;
             flex-direction: row;
@@ -275,6 +278,10 @@ export default {
                 border-right: 1px solid #f4f5f5;
             }
         }
+    }
+    .sticky-change {
+        position: fixed;
+        top: 60px;
     }
 }
 </style>

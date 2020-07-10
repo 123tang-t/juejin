@@ -12,7 +12,7 @@
         </div>
         <div class="events-list">
             <div class="events" v-for="events of eventsDetails" :key="events.id">
-                <img class="events-img" src="https://user-gold-cdn.xitu.io/15913364650242e7421a4ce12eac731000bd443b4c8ee.jpg?imageView2/1/w/460/h/270/q/85/format/webp/interlace/1" alt="events.id">
+                <img class="events-img" src="../assets/photo/cover.jpg" alt="events.id">
                 <div class="message">
                     <div class="title">{{events.title}}</div>
                     <div class="activity-time">

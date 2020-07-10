@@ -24,4 +24,10 @@
     }
     
 }
+.el-carousel {
+    z-index: 0;
+    .el-carousel__item {
+        z-index: 0;
+    }
+}
     

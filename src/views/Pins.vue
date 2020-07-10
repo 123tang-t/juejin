@@ -1,7 +1,7 @@
 <template>
     <div :class="[headerSelect==='pins'?'pins-select':'', 'pins-page']">
         <!-- 左边菜单栏 -->
-        <div class="left-nav">
+        <div :class="[navFixed?'nav-select':'', 'left-nav']">
             <ul class="list-top">
                 <li
                     :class="[listSelect===menuTop.value?'list-select':'', 'list-child']"
@@ -29,7 +29,7 @@
                 :key="pins.id">
                 <div class="pins-header">
                     <div class="left-title">
-                        <img class="avatar" src="https://user-gold-cdn.xitu.io/2020/5/21/17235e08e8da1159?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1" alt="头像"/>
+                        <img class="avatar" src="../assets/photo/sign2.jpg" alt="头像"/>
                         <div class="info-desc">
                             <div class="title">{{pins.username}}{{pins.id}}</div>
                             <div class="meta-box">
@@ -64,7 +64,7 @@
             </div>
         </div>
         <!-- 右边信息栏 -->
-        <div class="right-news">
+        <div :class="[navFixed?'nav-right':'', 'right-news']">
             <div class="header">推荐沸点</div>
             <div class="pin-list">123</div>
             <div class="guide-link">
@@ -80,7 +80,8 @@ export default {
     name: 'PinsPage',
     props: {
         pinsDetails: Array,
-        headerSelect: String
+        headerSelect: String,
+        navFixed: Boolean
     },
     data () {
         return {
@@ -137,20 +138,15 @@ export default {
     justify-content: space-between;
     max-width: 960px;
     margin: 80px auto 72px;
-    // .nav-select {
-    //     position: fixed;
-    //     top: 20px;
-    // }
     .left-nav {
-        // position: fixed;
-        // top: 80px;
-        // left: 0;
+        position: fixed;
+        top: 80px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 88px;
-        height: 100%;
+        // height: 100%;
         padding: 16px 12px;
         background: #fff;
         color: #909090;
@@ -179,9 +175,14 @@ export default {
             border-bottom: 1px solid #909090;
         }
     }
+    .nav-select {
+        position: fixed;
+        top: 15px;
+    }
     .pins {
         display: flex;
         flex-direction: column;
+        margin: 0 0 0 127px;
         width: 570px;
         .content-list {
             display: flex;
@@ -341,6 +342,11 @@ export default {
                 font-size: 14.04px;
             }
         }
+    }
+    .nav-right {
+        margin-left: 712px;
+        position: fixed;
+        top: 15px;
     }
 }
 </style>

@@ -76,7 +76,7 @@
                             <div class="profile-picture">
                                 <img
                                     class="picture"
-                                    src="https://user-gold-cdn.xitu.io/2019/9/5/16cff217225aacc3?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
+                                    src="../assets/photo/sign1.jpg"
                                     alt="头像"
                                     @click.stop="openMenu">
                             </div>
@@ -108,7 +108,8 @@
             :headerSelect="headerSelect"
             :pinsDetails="pinsDetails"
             :booksDetails="booksDetails"
-            :eventsDetails="eventsDetails"/>
+            :eventsDetails="eventsDetails"
+            :navFixed="navFixed"/>
         <!-- 右下角图标 -->
         <div class="footer">
             <div class="back-top" v-if="backTop">
@@ -150,6 +151,8 @@ export default {
             expandMerge: false,
             signRegistered: false,
             loginToRegister: '',
+            // 改变页面左右列表的固定定位
+            navFixed: false,
             // 接口数据页码
             page: 1,
             pageSize: 20,
@@ -299,7 +302,6 @@ export default {
             const height = el.target.documentElement.scrollHeight - el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const backHeight = el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const headerChange = el.target.documentElement.scrollTop
-            // 控制头部是否隐藏
             if (headerChange < 200) {
                 this.show = true
             } else if (this.select === 'Welcome') {
@@ -307,6 +309,12 @@ export default {
             } else {
                 this.show = false
                 this.headerSelect = this.$route.name
+            }
+            // 控制左右列表的固定定位
+            if (headerChange > 200) {
+                this.navFixed = true
+            } else {
+                this.navFixed = false
             }
             // 控制右下角图标是否显示
             if (backHeight >= 0) {
