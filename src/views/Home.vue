@@ -108,6 +108,7 @@
             :headerSelect="headerSelect"
             :pinsDetails="pinsDetails"
             :booksDetails="booksDetails"
+            :topicsDetails="topicsDetails"
             :eventsDetails="eventsDetails"
             :navFixed="navFixed"/>
         <!-- 右下角图标 -->
@@ -163,6 +164,8 @@ export default {
             pinsDetails: [],
             // 小册
             booksDetails: [],
+            // 话题
+            topicsDetails: [],
             // 活动
             eventsDetails: [],
             // 控制右下角图标显示隐藏
@@ -222,6 +225,11 @@ export default {
             if (value === 'Books') {
                 this.$router.push({
                     path: '/books'
+                })
+            }
+            if (value === 'Topics') {
+                this.$router.push({
+                    path: '/topics'
                 })
             }
             if (value === 'Events') {
@@ -355,6 +363,12 @@ export default {
                     .then((result) => {
                         this.booksDetails = result.data.data.list
                         this.pageCount = result.data.data.pageCount
+                    })
+            }
+            if (this.select === 'Topics') {
+                axios.get('/mock/index.json')
+                    .then((result) => {
+                        this.topicsDetails = result.data.data.topic
                     })
             }
             if (this.select === 'Events') {
