@@ -4,11 +4,13 @@
             <div class="carousel">
                 <el-carousel trigger="click" arrow="never" height="280px">
                     <el-carousel-item v-for="events of eventsDetails" :key="events.id">
-                        <img src="https://user-gold-cdn.xitu.io/159229602175354c36631f184246bac76523afa47c229.jpg?imageView2/1/w/460/h/270/q/85/format/webp/interlace/1" :alt="events.id">
+                        <img class="img" src="../assets/photo/web.jpg" :alt="events.id">
                     </el-carousel-item>
                 </el-carousel>
             </div>
-            <div class="calendar"></div>
+            <div class="calendar">
+                <el-calendar v-model="value" class="calendar-table"></el-calendar>
+            </div>
         </div>
         <div class="events-list">
             <div class="events" v-for="events of eventsDetails" :key="events.id">
@@ -34,6 +36,11 @@ export default {
     name: 'EventsPage',
     props: {
         eventsDetails: Array
+    },
+    data () {
+        return {
+            value: new Date()
+        }
     }
 }
 </script>
@@ -48,6 +55,17 @@ export default {
         height: 280px;
         .carousel {
             width: 470px;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .calendar {
+            margin-left: 15px;
+            width: 475px;
+            .calendar-table {
+                height: 280px;
+            }
         }
     }
     .events-list {

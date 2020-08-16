@@ -31,7 +31,7 @@
             </el-button>
             <div class="prompt-box">
                 <span>没有账号？</span>
-                <a class="chickable" href="">注册</a>
+                <span class="chickable" @click.stop="openRegistered">注册</span>
                 <a class="right-chickable" href="">忘记密码</a>
             </div>
             <div class="agreement-box">
@@ -80,7 +80,7 @@
                 注册
             </el-button>
             <div class="prompt-box">
-                <a class="chickable" href="">已有账号登录</a>
+                <span class="chickable" href="" @click.stop="openSign">已有账号登录</span>
             </div>
             <div class="agreement-box">
                 <span>注册登录即表示同意</span>
@@ -120,6 +120,12 @@ export default {
     //     }
     // },
     methods: {
+        openSign () {
+            this.$emit('openSign')
+        },
+        openRegistered () {
+            this.$emit('openRegistered')
+        },
         loginAccount () {
             // this.loginMessage.password = sha256(this.loginMessage.password)
             // console.log(this.loginMessage.password)

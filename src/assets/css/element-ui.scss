@@ -24,10 +24,34 @@
     }
     
 }
-.el-carousel {
-    z-index: 0;
-    .el-carousel__item {
-        z-index: 0;
+// .el-carousel {
+//     z-index: 0;
+//     .el-carousel__item {
+//         z-index: 0;
+//     }
+// }
+.el-calendar {
+    .el-calendar__header {
+        padding: 6px 10px;
+        font-size: 8px;
+        // .el-button-group>.el-button {
+        //     display: flex;
+        //     flex-direction: row;
+        //     justify-content: space-between;
+        //     align-items: center;
+        // }
+    }
+    .el-calendar__body {
+        padding: 6px 10px;
+        height: 239px;
+        font-size: 8px;
+        .el-calendar-table thead th {
+            padding: 2px 0;
+        }
+        .el-calendar-table .el-calendar-day {
+            padding: 2px;
+            height: 33px;
+        }
     }
 }
     

@@ -81,8 +81,28 @@
                                     @click.stop="openMenu">
                             </div>
                             <div class="menu-list" v-if="menu">
-                                <img class="icon" src="../../public/icon/out.png" alt="图标">
-                                <span @click="signOut">登出</span>
+                                <ul class="list">
+                                    <li class="list-child">
+                                        <img class="icon" src="../assets/imgs/list/1.png" alt="图标">
+                                        <span>写文章</span>
+                                    </li>
+                                    <li class="list-child">
+                                        <img class="icon" src="../assets/imgs/list/2.png" alt="图标">
+                                        <span>草稿</span>
+                                    </li>
+                                    <li class="list-child">
+                                        <img class="icon" src="../assets/imgs/list/3.png" alt="图标">
+                                        <span>设置</span>
+                                    </li>
+                                    <li class="list-child">
+                                        <img class="icon" src="../assets/imgs/list/4.png" alt="图标">
+                                        <span>关于</span>
+                                    </li>
+                                </ul>
+                                <div class="out" @click="signOut">
+                                    <img class="icon" src="../assets/imgs/list/out.png" alt="图标">
+                                    <span>登出</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +120,9 @@
             :loginToRegister="loginToRegister"
             @colse="dialogColse"
             @login="loginAccount"
-            @register="registerAccount"/>
+            @register="registerAccount"
+            @openSign="openSign"
+            @openRegistered="openRegistered"/>
         <!-- 详情页面 -->
         <router-view
             :loginStatus="loginStatus"
@@ -247,10 +269,18 @@ export default {
             this.signRegistered = !this.signRegistered
             this.loginToRegister = 'sign'
         },
+        openRegistered () {
+            this.signRegistered = true
+            this.loginToRegister = 'registered'
+        },
         // 打开注册页面
         registered () {
             this.signRegistered = !this.signRegistered
             this.loginToRegister = 'registered'
+        },
+        openSign () {
+            this.signRegistered = true
+            this.loginToRegister = 'sign'
         },
         // 账号登录
         loginAccount (accountMessage) {
@@ -686,21 +716,41 @@ export default {
                     }
                     .menu-list {
                         display: flex;
-                        flex-direction: row;
+                        flex-direction: column;
                         justify-content: center;
                         align-items: center;
                         position: absolute;
                         top: 60px;
                         right: 0;
-                        padding: 12px 0;
                         width: 157.19px;
-                        height: 30px;
+                        height: 184px;
                         color: #71777C;
                         font-size: 18px;
                         background: #fff;
                         border: 1px solid #f4f5f5;
-                        z-index: 112;
-                        .icon {
+                        z-index: 9999;
+                        .list {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            list-style-type: none;
+                            .list-child {
+                                padding: 6px 12px;
+                                text-align: left;
+                            }
+                            .list-child:nth-child(2), .list-child:nth-child(4) {
+                                border-bottom: 1px solid #f4f5f5;
+                            }
+                        }
+                        .out {
+                            width: 157.19px;
+                            padding: 6px;
+                            text-align: left;
+                            img {
+                                margin-left: 12px;
+                            }
+                        }
+                        .list .list-child .icon, .out .icon {
                             margin-right: 10px;
                             width: 18.73px;
                             height: 18px;

@@ -24,7 +24,7 @@
                 <div class="author-list" v-if="loginStatus">
                     <div class="title">作者榜</div>
                     <div class="list-item" v-for="message of authorMessage" :key="message.id">
-                        <img class="author-avater" :src="message.ingUrl" :alt="message.id">
+                        <img class="author-avater" src="../assets/photo/sign2.jpg" :alt="message.id">
                         <div class="desc">
                             <div class="title">{{message.name}}</div>
                             <div class="job">{{message.job}}</div>
