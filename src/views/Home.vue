@@ -1,7 +1,10 @@
 <template>
     <div class="home" @click="essayColse">
         <!-- 点击用户头像显示列表 -->
-        <div class="menu-list" v-if="menu">
+        <div
+            class="menu-list"
+            :style="location"
+            v-if="menu">
             <ul class="list">
                 <li class="list-child">
                     <img class="icon" src="../assets/imgs/list/1.png" alt="图标">
@@ -195,6 +198,8 @@ export default {
             backTop: false,
             // 控制滚动加载数据
             isLoadingData: false,
+            screenwidth: document.documentElement.clientWidth,
+            right: 0,
             list: [{
                 value: 'Welcome',
                 label: '首页',
@@ -216,6 +221,9 @@ export default {
             }]
         }
     },
+    created () {
+        this.computedLacation()
+    },
     mounted () {
         this.page = 1
         this.pageCount = 1
@@ -223,8 +231,42 @@ export default {
         this.changeDemo = this.$route.name
         this.getRecommendList()
         window.addEventListener('scroll', this.changeScroll)
+        window.addEventListener('resize', this.resize)
+    },
+    computed: {
+        location () {
+            return {
+                right: `${this.right}px`
+            }
+        }
     },
     methods: {
+        // 计算右边距
+        computedLacation () {
+            var screenwidth = document.documentElement.clientWidth
+            if (screenwidth < 960) {
+                this.right = 0
+                this.$message({
+                    message: '当前视窗宽度小于960px',
+                    type: 'warning'
+                })
+            } else {
+                this.right = (screenwidth - 960) / 2
+            }
+        },
+        // 窗口大小发生改变的时候触发
+        resize () {
+            var screenwidth = document.documentElement.clientWidth
+            if (screenwidth < 960) {
+                this.right = 0
+                this.$message({
+                    message: '当前视窗宽度小于960px',
+                    type: 'warning'
+                })
+            } else {
+                this.right = (screenwidth - 960) / 2
+            }
+        },
         // 切换页面
         change (value, font, router) {
             this.select = value
@@ -341,6 +383,7 @@ export default {
             const height = el.target.documentElement.scrollHeight - el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const backHeight = el.target.documentElement.scrollTop - el.target.documentElement.clientHeight
             const headerChange = el.target.documentElement.scrollTop
+            // 头部在页面中是否隐藏
             if (headerChange < 200) {
                 this.show = true
             } else if (this.select === 'Welcome') {
@@ -466,7 +509,7 @@ export default {
         align-items: center;
         position: absolute;
         top: 60px;
-        right: 0;
+        // right: 0;
         width: 157.19px;
         height: 184px;
         color: #71777C;
@@ -482,6 +525,7 @@ export default {
             .list-child {
                 padding: 6px 12px;
                 text-align: left;
+                cursor: pointer;
             }
             .list-child:nth-child(2), .list-child:nth-child(4) {
                 border-bottom: 1px solid #f4f5f5;
@@ -491,6 +535,7 @@ export default {
             width: 157.19px;
             padding: 6px;
             text-align: left;
+            cursor: pointer;
             img {
                 margin-left: 12px;
             }

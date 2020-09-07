@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="right-img">
-                    <img src="https://user-gold-cdn.xitu.io/2020/6/13/172adb6a7ba4a302?imageView2/1/w/120/h/120/q/85/format/webp/interlace/1" alt="">
+                    <img src="../../assets/photo/sign1.jpg" alt="">
                 </div>
             </div>
         </div>
