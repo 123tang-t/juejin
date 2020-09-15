@@ -18,4 +18,5 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+@import '@/assets/css/marked.scss';
 </style>

@@ -86,14 +86,14 @@
                             <div class="essay">
                                 <div class="add-ground">
                                     <div class="add-btn">
-                                        <span>发沸点</span>
+                                        <span @click="openMarkdown">写文章</span>
                                     </div>
                                     <div class="right-icon" @click.stop="unfold">
                                         <img class="icon" src="../../public/icon/drop.png" alt="下拉图标">
                                     </div>
                                     <div class="write-article" v-if="expandMerge">
                                         <ul class="list">
-                                            <li class="list-item">写文章</li>
+                                            <li class="list-item">发沸点</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -364,6 +364,11 @@ export default {
         },
         chageEssay () {
             this.essay = !this.essay
+        },
+        openMarkdown () {
+            this.$router.push({
+                path: '/marked'
+            })
         },
         registeredJump () {
             this.essay = false

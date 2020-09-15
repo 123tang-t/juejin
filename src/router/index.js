@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Marked from '../views/Markdown.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ const routes = [
             name: 'Events',
             component: () => import(/* webpackChunkName: "about" */ '../views/Events.vue')
         }]
+    },
+    {
+        path: '/marked',
+        name: 'Marked',
+        component: Marked
     }
 ]
 

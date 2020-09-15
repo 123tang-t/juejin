@@ -8,11 +8,31 @@
         margin: 0 0 10px 0;
     }
 }
+// 登录注册页面输入框的样式
 .dialog-input {
     .el-input__inner {
         background: #fff;
     }
 }
+// Markdown页面输入框的样式
+.mark-title-input {
+    .el-input__inner {
+        height: 63px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        background: #fff;
+        border: none;
+        outline: none;
+    }
+}
+.textarea {
+    .el-textarea__inner {
+        background: #f4f5f5;
+        border: none;
+    }
+}
+// 主页头部按键样式
 .essay-button {
     height: 43px;
     padding: 12px 48px;
@@ -24,12 +44,6 @@
     }
     
 }
-// .el-carousel {
-//     z-index: 0;
-//     .el-carousel__item {
-//         z-index: 0;
-//     }
-// }
 .el-calendar {
     .el-calendar__header {
         padding: 6px 10px;
