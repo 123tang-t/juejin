@@ -98,7 +98,7 @@ export default {
         },
         // 多行文本框值更新时触发
         markdown () {
-            this.markedContent = marked('- a\n\t- b')
+            this.markedContent = marked(this.textarea)
         }
         // text () {
         //     this.renderer = {
