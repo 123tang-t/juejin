@@ -155,6 +155,17 @@ export default {
                 password: ''
             }
         }
+        // resetInfo () {
+        //     this.loginMessage = {
+        //         username: '',
+        //         password: ''
+        //     }
+        //     this.registerMessage = {
+        //         username: '',
+        //         phoneNumber: '',
+        //         password: ''
+        //     }
+        // }
     }
 }
 </script>

@@ -67,7 +67,6 @@ export default {
     },
     created () {
         this.textareaLocation()
-        // this.text()
     },
     mounted () {
         marked.setOptions({
@@ -98,23 +97,20 @@ export default {
         },
         // 多行文本框值更新时触发
         markdown () {
+            this.renderer = {
+                heading (text, level) {
+                    const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
+                    return `
+                        <h${level}>
+                            <a name="${escapedText}" class="anchor" href="#${escapedText}">
+                                <span class="header-link">123</span>
+                            </a>
+                            123
+                        </h${level}>`
+                }
+            }
             this.markedContent = marked(this.textarea)
         }
-        // text () {
-        //     this.renderer = {
-        //         heading (text, level) {
-        //             const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
-        //             return `
-        //                 <h${level}>
-        //                     <a name="${escapedText}" class="anchor" href="#${escapedText}">
-        //                         <span class="header-link">123</span>
-        //                     </a>
-        //                     ${text}
-        //                 </h${level}>`
-        //         }
-        //     }
-        //     console.log(marked('# heading+'))
-        // }
     }
 }
 </script>

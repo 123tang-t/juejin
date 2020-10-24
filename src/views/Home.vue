@@ -231,6 +231,7 @@ export default {
         this.changeDemo = this.$route.name
         this.getRecommendList()
         window.addEventListener('scroll', this.changeScroll)
+        // 当屏幕页面发生改变的时候触发该事件
         window.addEventListener('resize', this.resize)
     },
     computed: {
